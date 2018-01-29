@@ -34,4 +34,10 @@ namespace VSLee.Utils.ExchangeBase
 				return Side.Buy;
 		}
 	}
+
+	public enum Exchange_Enum : byte
+	{
+		GDAX = 10,
+		Binance = 11
+	}
 }

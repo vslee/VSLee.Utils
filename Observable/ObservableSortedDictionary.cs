@@ -243,7 +243,7 @@ namespace VSLee.Utils
 		private void OnCollectionChanged(NotifyCollectionChangedAction action, KeyValuePair<TKey, TValue> newItem, KeyValuePair<TKey, TValue> oldItem)
 		{
 			OnPropertyChanged();
-			if (CollectionChanged != null) CollectionChanged(this, new NotifyCollectionChangedEventArgs(action, newItem, oldItem));
+			if (CollectionChanged != null) CollectionChanged(this, new NotifyCollectionChangedEventArgs(action, newItem: newItem, oldItem: oldItem));
 		}
 
 		private void OnCollectionChanged(NotifyCollectionChangedAction action, IList newItems)

@@ -17,7 +17,7 @@ namespace VSLee.Utils
     /// <typeparam name="T">
     /// The content type
     /// </typeparam>
-    public sealed class ObservableConcurrentQueue<T> : ConcurrentQueue<T>
+    public sealed class ObservableConcurrentQueueCYounes<T> : ConcurrentQueue<T>
     { // https://github.com/cyounes/ObservableConcurrentQueue
         #region Public Events
 
