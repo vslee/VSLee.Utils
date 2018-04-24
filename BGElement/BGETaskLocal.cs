@@ -364,6 +364,16 @@ namespace VSLee.Utils
 			Task.WaitAll(consumers);
 		}
 
+		public async Task WaitForCompletionAsync()
+		{ // + add a WhenComplete() http://stackoverflow.com/questions/6123406/waitall-vs-whenall
+			foreach (var taskQ in _taskQs)
+			{
+				taskQ.CompleteAdding();
+			}
+			// + should we also CheckCompletion() here?
+			await Task.WhenAll(consumers);
+		}
+
 		public virtual void Dispose()
 		{
 			cTokenSource.Cancel();

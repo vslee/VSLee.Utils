@@ -17,6 +17,9 @@ namespace VSLee.Utils
 		private LinkedList<T> m_UnderLyingLinkedList;
 
 		#region Variables accessors
+		/// <summary>
+		/// Because the list (underlying LinkedList<T>) also maintains an internal count, getting the Count property is an O(1) operation.
+		/// </summary>
 		public int Count
 		{
 			get { return m_UnderLyingLinkedList.Count; }
@@ -77,6 +80,15 @@ namespace VSLee.Utils
 		public LinkedListNode<T> AddFirst(T value)
 		{
 			LinkedListNode<T> ret = m_UnderLyingLinkedList.AddFirst(value);
+			OnNotifyCollectionChanged();
+			return ret;
+		}
+
+		public IList<LinkedListNode<T>> AddFirstRange(IEnumerable<T> values)
+		{
+			var ret = new List<LinkedListNode<T>>();
+			foreach (var value in values)
+				ret.Add(m_UnderLyingLinkedList.AddFirst(value));
 			OnNotifyCollectionChanged();
 			return ret;
 		}
@@ -158,6 +170,17 @@ namespace VSLee.Utils
 		public void RemoveLast()
 		{
 			m_UnderLyingLinkedList.RemoveLast();
+			OnNotifyCollectionChanged();
+		}
+
+		/// <summary>
+		/// Keeps removing last until count is less than or equal to maxCount (will not remove if already lower)
+		/// </summary>
+		/// <param name="maxCount"></param>
+		public void RemoveLastPRN(int maxCount)
+		{
+			while (m_UnderLyingLinkedList.Count > maxCount)
+				m_UnderLyingLinkedList.RemoveLast();
 			OnNotifyCollectionChanged();
 		}
 		#endregion
