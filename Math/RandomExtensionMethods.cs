@@ -37,7 +37,7 @@ namespace VSLee.Utils
 		/// <param name="rng"></param>
 		/// <param name="decimalPlacesToStart">number of zeors prior to first number after decimal point</param>
 		/// <param name="decimalPlacesToEnd">total number of digits after decimal point</param>
-		/// <returns></returns>
+		/// <returns>can be a negative number</returns>
 		public static decimal NextDecimal(this Random rng, int decimalPlacesToStart, int decimalPlacesToEnd)
 		{
 			var random = rng.RandomNumberBetween(minValue: -1, maxValue: 1);

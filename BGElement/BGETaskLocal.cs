@@ -376,6 +376,7 @@ namespace VSLee.Utils
 
 		public virtual void Dispose()
 		{
+			// TODO: fire progress event if no data was added for processing
 			cTokenSource.Cancel();
 			WaitForCompletion();
 			foreach (var taskQ in _taskQs)

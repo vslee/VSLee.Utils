@@ -114,7 +114,7 @@ namespace VSLee.Utils
         /// </summary>
         /// <param name="millisecondsTimeout">Number of milliseconds to wait, or -1 to wait indefinitely.</param>
         /// <returns>true if the thread is allowed to proceed, or false if timed out</returns>
-        public bool WaitToProceed(int millisecondsTimeout)
+        public bool WaitToProceed(int millisecondsTimeout = Timeout.Infinite)
         {
             // Check the arguments.
             if (millisecondsTimeout < -1)
@@ -142,7 +142,7 @@ namespace VSLee.Utils
 		/// </summary>
 		/// <param name="millisecondsTimeout">Number of milliseconds to wait, or -1 to wait indefinitely.</param>
 		/// <returns>true if the thread is allowed to proceed, or false if timed out</returns>
-		public async Task<bool> WaitToProceedAsync(int millisecondsTimeout)
+		public async Task<bool> WaitToProceedAsync(int millisecondsTimeout = Timeout.Infinite)
 		{ // https://stackoverflow.com/questions/35493925/simple-way-to-rate-limit-httpclient-requests
 		  // Check the arguments.
 			if (millisecondsTimeout < -1)
@@ -184,22 +184,6 @@ namespace VSLee.Utils
 		public async Task<bool> WaitToProceedAsync(TimeSpan timeout)
 		{
 			return await WaitToProceedAsync((int)timeout.TotalMilliseconds);
-		}
-
-		/// <summary>
-		/// Blocks the current thread indefinitely until allowed to proceed.
-		/// </summary>
-		public bool WaitToProceed()
-        {
-            return WaitToProceed(Timeout.Infinite);
-        }
-
-		/// <summary>
-		/// Async Blocks the current thread indefinitely until allowed to proceed.
-		/// </summary>
-		public async Task<bool> WaitToProceedAsync()
-		{
-			return await WaitToProceedAsync(Timeout.Infinite);
 		}
 
 		// Throws an ObjectDisposedException if this object is disposed.

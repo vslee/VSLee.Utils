@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Text;
 
@@ -54,68 +55,78 @@ namespace VSLee.Utils
 		public LinkedListNode<T> AddAfter(LinkedListNode<T> prevNode, T value)
 		{
 			LinkedListNode<T> ret = m_UnderLyingLinkedList.AddAfter(prevNode, value);
-			OnNotifyCollectionChanged();
+			OnNotifyCollectionChangedReset();
 			return ret;
 		}
 
 		public void AddAfter(LinkedListNode<T> node, LinkedListNode<T> newNode)
 		{
 			m_UnderLyingLinkedList.AddAfter(node, newNode);
-			OnNotifyCollectionChanged();
+			OnNotifyCollectionChangedReset();
 		}
 
 		public LinkedListNode<T> AddBefore(LinkedListNode<T> node, T value)
 		{
 			LinkedListNode<T> ret = m_UnderLyingLinkedList.AddBefore(node, value);
-			OnNotifyCollectionChanged();
+			OnNotifyCollectionChangedReset();
 			return ret;
 		}
 
 		public void AddBefore(LinkedListNode<T> node, LinkedListNode<T> newNode)
 		{
 			m_UnderLyingLinkedList.AddBefore(node, newNode);
-			OnNotifyCollectionChanged();
+			OnNotifyCollectionChangedReset();
 		}
 
 		public LinkedListNode<T> AddFirst(T value)
 		{
 			LinkedListNode<T> ret = m_UnderLyingLinkedList.AddFirst(value);
-			OnNotifyCollectionChanged();
+			CollectionChanged?.Invoke(this,
+				new NotifyCollectionChangedEventArgs(
+					NotifyCollectionChangedAction.Add, value, 0));
 			return ret;
 		}
 
 		public IList<LinkedListNode<T>> AddFirstRange(IEnumerable<T> values)
 		{
 			var ret = new List<LinkedListNode<T>>();
+			//foreach (var value in values)
+			//	ret.Add(m_UnderLyingLinkedList.AddFirst(value));
+			//OnNotifyCollectionChangedReset();
 			foreach (var value in values)
-				ret.Add(m_UnderLyingLinkedList.AddFirst(value));
-			OnNotifyCollectionChanged();
+				ret.Add(AddFirst(value));
 			return ret;
 		}
 
 		public void AddFirst(LinkedListNode<T> node)
 		{
 			m_UnderLyingLinkedList.AddFirst(node);
-			OnNotifyCollectionChanged();
+			CollectionChanged?.Invoke(this,
+				new NotifyCollectionChangedEventArgs(
+					NotifyCollectionChangedAction.Add, node.Value, 0));
 		}
 
 		public LinkedListNode<T> AddLast(T value)
 		{
 			LinkedListNode<T> ret = m_UnderLyingLinkedList.AddLast(value);
-			OnNotifyCollectionChanged();
+			CollectionChanged?.Invoke(this, 
+				new NotifyCollectionChangedEventArgs(
+					NotifyCollectionChangedAction.Add, value, m_UnderLyingLinkedList.Count));
 			return ret;
 		}
 
 		public void AddLast(LinkedListNode<T> node)
 		{
 			m_UnderLyingLinkedList.AddLast(node);
-			OnNotifyCollectionChanged();
+			CollectionChanged?.Invoke(this,
+				new NotifyCollectionChangedEventArgs(
+					NotifyCollectionChangedAction.Add, node.Value, m_UnderLyingLinkedList.Count));
 		}
 
 		public void Clear()
 		{
 			m_UnderLyingLinkedList.Clear();
-			OnNotifyCollectionChanged();
+			OnNotifyCollectionChangedReset();
 		}
 
 		public bool Contains(T value)
@@ -151,26 +162,28 @@ namespace VSLee.Utils
 		public bool Remove(T value)
 		{
 			bool ret = m_UnderLyingLinkedList.Remove(value);
-			OnNotifyCollectionChanged();
+			OnNotifyCollectionChangedReset();
 			return ret;
 		}
 
 		public void Remove(LinkedListNode<T> node)
 		{
 			m_UnderLyingLinkedList.Remove(node);
-			OnNotifyCollectionChanged();
+			OnNotifyCollectionChangedReset();
 		}
 
 		public void RemoveFirst()
 		{
+			var first = m_UnderLyingLinkedList.First;
 			m_UnderLyingLinkedList.RemoveFirst();
-			OnNotifyCollectionChanged();
+			CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, first, 0));
 		}
 
 		public void RemoveLast()
 		{
+			var last = m_UnderLyingLinkedList.Last.Value;
 			m_UnderLyingLinkedList.RemoveLast();
-			OnNotifyCollectionChanged();
+			CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, last, m_UnderLyingLinkedList.Count));
 		}
 
 		/// <summary>
@@ -180,15 +193,16 @@ namespace VSLee.Utils
 		public void RemoveLastPRN(int maxCount)
 		{
 			while (m_UnderLyingLinkedList.Count > maxCount)
-				m_UnderLyingLinkedList.RemoveLast();
-			OnNotifyCollectionChanged();
+				//m_UnderLyingLinkedList.RemoveLast();
+				RemoveLast();
+			//OnNotifyCollectionChangedReset();
 		}
 		#endregion
 
 		#region INotifyCollectionChanged Members
 
 		public event NotifyCollectionChangedEventHandler CollectionChanged;
-		public void OnNotifyCollectionChanged()
+		public void OnNotifyCollectionChangedReset()
 		{
 			if (CollectionChanged != null)
 			{
