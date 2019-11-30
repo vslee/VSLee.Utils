@@ -5,9 +5,9 @@ using System.Text;
 
 namespace VSLee.Utils.ExchangeBase
 { // C# byte: 0 to 255, SQL Server tinyint	0 to 255
-	public enum Side : byte 
-	{ 
-		Buy = 2, 
+	public enum Side : byte
+	{
+		Buy = 2,
 		Sell = 4,
 		/// <summary>
 		/// IB: Sell Short as part of a combo leg
@@ -38,19 +38,19 @@ namespace VSLee.Utils.ExchangeBase
 
 	public enum OrderType : byte
 	{
-		/// Kraken
-		/// market
-		/// limit(price = limit price)
-		/// stop-loss(price = stop loss price)
-		/// take-profit(price = take profit price)
-		/// stop-loss-profit(price = stop loss price, price2 = take profit price)
-		/// stop-loss-profit-limit(price = stop loss price, price2 = take profit price)
-		/// stop-loss-limit(price = stop loss trigger price, price2 = triggered limit price)
-		/// take-profit-limit(price = take profit trigger price, price2 = triggered limit price)
-		/// trailing-stop(price = trailing stop offset)
-		/// trailing-stop-limit(price = trailing stop offset, price2 = triggered limit offset)
-		/// stop-loss-and-limit(price = stop loss price, price2 = limit price)
-		/// settle-position
+		// Kraken
+		// market
+		// limit(price = limit price)
+		// stop-loss(price = stop loss price)
+		// take-profit(price = take profit price)
+		// stop-loss-profit(price = stop loss price, price2 = take profit price)
+		// stop-loss-profit-limit(price = stop loss price, price2 = take profit price)
+		// stop-loss-limit(price = stop loss trigger price, price2 = triggered limit price)
+		// take-profit-limit(price = take profit trigger price, price2 = triggered limit price)
+		// trailing-stop(price = trailing stop offset)
+		// trailing-stop-limit(price = trailing stop offset, price2 = triggered limit offset)
+		// stop-loss-and-limit(price = stop loss price, price2 = limit price)
+		// settle-position
 
 		Market = 2, Limit = 4,
 
@@ -73,38 +73,44 @@ namespace VSLee.Utils.ExchangeBase
 	{
 		// crypto exchanges
 		Binance = 5,
-		BinanceUS = 7,
-		BitBlinx = 9,
-		Bitfinex = 12,
-		BitFlyer = 16,
-		BitMEX = 18,
-		Bitstamp = 20,
-		Bittrex = 22,
-		CEXIO = 26,
+		BinanceDEX = 6,
+		BinanceJersey = 7,
+		BinanceUS = 8,
+		BitBlinx = 11,
+		Bitfinex = 14,
+		BitFlyer = 17,
+		Bithumb = 20,
+		BitMEX = 23,
+		Bitstamp = 26,
+		Bittrex = 29,
+		BL3P = 32,
+		CEXIO = 34,
 		/// <summary>
 		/// coinbase pro AKA GDAX
 		/// </summary>
-		Coinbase = 28,
-		Digifinex = 29, //---------------
-		Gemini = 30,
-		itBit = 32,
-		HitBTC = 34,
-		Huobi = 36,
-		Kraken = 38,
-		KuCoin = 40,
-		LBank = 42,
-		OKCoin = 44,
-		OKEx = 46,
-		Poloniex = 48,
-		ThePit = 50,
-		ZBcom = 52,
+		Coinbase = 36,
+		CoinEx = 38,
+		Digifinex = 40,
+		Gemini = 42,
+		itBit = 44,
+		HitBTC = 46,
+		Huobi = 48,
+		Kraken = 50,
+		KuCoin = 52,
+		LBank = 54,
+		NDAX = 56,
+		OKCoin = 59,
+		OKEx = 61,
+		Poloniex = 64,
+		ThePit = 66,
+		ZBcom = 68,
 
-		Backtest = 60, // + just one backtest for now, but may need to create separate ones in the future for diff data sources
+		Backtest = 80, // + just one backtest for now, but may need to create separate ones in the future for diff data sources
 
 		// stock exchanges / brokers
-		IEX = 100,
-		InteractiveBrokers = 105,
-		TDAmeritrade = 110,
+		IEX = 110,
+		InteractiveBrokers = 120,
+		TDAmeritrade = 130,
 
 		// placeholders for discriminators
 		Discriminator_Base = 150,
@@ -119,6 +125,7 @@ namespace VSLee.Utils.ExchangeBase
 		Discriminator_GradientCryptoBase = 170,
 		Discriminator_GradientCrypto = 172,
 		Discriminator_ESLedger = 174,
+		Discriminator_BinanceBase = 176,
 	}
 
 	public enum Realm : byte
@@ -267,18 +274,23 @@ namespace VSLee.Utils.ExchangeBase
 		{
 			switch (exchangeString.ToLowerInvariant())
 			{
-				case "binace": return Exchange_Enum.Binance; // typo in earlier revision of PLP log
 				case "binance": return Exchange_Enum.Binance;
+				case "binancedex": return Exchange_Enum.BinanceDEX;
+				case "binancejersey": return Exchange_Enum.BinanceJersey;
 				case "binanceus": return Exchange_Enum.BinanceUS;
 				case "bitblinx": return Exchange_Enum.BitBlinx;
 				case "bitfinex": return Exchange_Enum.Bitfinex;
 				case "bitflyer": return Exchange_Enum.BitFlyer;
+				case "bithumb": return Exchange_Enum.Bithumb;
 				case "bitmex": return Exchange_Enum.BitMEX;
 				case "bitstamp": return Exchange_Enum.Bitstamp;
 				case "bittrex": return Exchange_Enum.Bittrex;
+				case "bl3p": return Exchange_Enum.BL3P;
 				case "cexio": return Exchange_Enum.CEXIO;
-				case "coinbase": return Exchange_Enum.Coinbase;
+				case "coinbase": // will automatically fall through to gdax
 				case "gdax": return Exchange_Enum.Coinbase;
+				case "coinex": return Exchange_Enum.CoinEx;
+				case "digifinex": return Exchange_Enum.Digifinex;
 				case "gemini": return Exchange_Enum.Gemini;
 				case "itbit": return Exchange_Enum.itBit;
 				case "hitbtc": return Exchange_Enum.HitBTC;
@@ -286,6 +298,7 @@ namespace VSLee.Utils.ExchangeBase
 				case "kraken": return Exchange_Enum.Kraken;
 				case "kucoin": return Exchange_Enum.KuCoin;
 				case "lbank": return Exchange_Enum.LBank;
+				case "ndax": return Exchange_Enum.NDAX;
 				case "okcoin": return Exchange_Enum.OKCoin;
 				case "okex": return Exchange_Enum.OKEx;
 				case "poloniex": return Exchange_Enum.Poloniex;
@@ -299,18 +312,20 @@ namespace VSLee.Utils.ExchangeBase
 		{
 			if (CryptoExchanges.Contains(exchange)) return Realm.Crypto;
 			if (EquityExchanges.Contains(exchange)) return Realm.Equity;
-			throw new NotImplementedException($"Unexpected exchagne in GetRealm() + {exchange}");
+			throw new NotImplementedException($"Unexpected exchange in GetRealm() + {exchange}");
 		}
 		public static Exchange_Enum[] CryptoExchanges => new Exchange_Enum[]
 		{
-			Exchange_Enum.Binance, Exchange_Enum.BinanceUS,
+			Exchange_Enum.Binance, Exchange_Enum.BinanceDEX, Exchange_Enum.BinanceJersey, Exchange_Enum.BinanceUS,
 			Exchange_Enum.BitBlinx, Exchange_Enum.Bitfinex, Exchange_Enum.BitFlyer,
 			Exchange_Enum.BitMEX, Exchange_Enum.Bitstamp, Exchange_Enum.Bittrex,
-			Exchange_Enum.CEXIO, Exchange_Enum.Coinbase, Exchange_Enum.Gemini,
+			Exchange_Enum.BL3P, Exchange_Enum.CEXIO, Exchange_Enum.Coinbase,
+			Exchange_Enum.CoinEx, Exchange_Enum.Digifinex, Exchange_Enum.Gemini,
 			Exchange_Enum.itBit, Exchange_Enum.Huobi, Exchange_Enum.Kraken,
-			Exchange_Enum.KuCoin, Exchange_Enum.OKCoin, Exchange_Enum.OKEx,
-			Exchange_Enum.Poloniex, Exchange_Enum.ThePit,
+			Exchange_Enum.KuCoin, Exchange_Enum.NDAX, Exchange_Enum.OKCoin,
+			Exchange_Enum.OKEx, Exchange_Enum.Poloniex, Exchange_Enum.ThePit,
 			Exchange_Enum.ZBcom,
+			Exchange_Enum.Discriminator_GradientCrypto, Exchange_Enum.Discriminator_GradientCryptoBase, Exchange_Enum.Discriminator_StandardCrypto,
 		};
 		public static bool IsESLedgerExchange(this Exchange_Enum exchange)
 		{
@@ -318,18 +333,28 @@ namespace VSLee.Utils.ExchangeBase
 		}
 		public static Exchange_Enum[] ESLedgerExchanges => new Exchange_Enum[]
 		{
-			Exchange_Enum.BinanceUS,
+			Exchange_Enum.Binance, Exchange_Enum.BinanceDEX, Exchange_Enum.BinanceJersey, Exchange_Enum.BinanceUS,
 			Exchange_Enum.BitBlinx, Exchange_Enum.Bitfinex, Exchange_Enum.BitFlyer,
 			Exchange_Enum.BitMEX, Exchange_Enum.Bitstamp, Exchange_Enum.Bittrex,
-			Exchange_Enum.CEXIO, Exchange_Enum.Gemini,
+			Exchange_Enum.BL3P, Exchange_Enum.CEXIO, Exchange_Enum.Coinbase,
+			Exchange_Enum.Digifinex, Exchange_Enum.Gemini, // not CoinEx
 			Exchange_Enum.itBit, Exchange_Enum.Huobi, Exchange_Enum.Kraken,
-			Exchange_Enum.KuCoin, Exchange_Enum.OKCoin, Exchange_Enum.OKEx,
-			Exchange_Enum.Poloniex, Exchange_Enum.ThePit,
+			Exchange_Enum.KuCoin, Exchange_Enum.NDAX, Exchange_Enum.OKCoin,
+			Exchange_Enum.OKEx, Exchange_Enum.Poloniex, Exchange_Enum.ThePit,
 			Exchange_Enum.ZBcom,
+		};
+		public static bool IsCELedgerExchange(this Exchange_Enum exchange)
+		{
+			return CELedgerExchanges.Contains(exchange);
+		}
+		public static Exchange_Enum[] CELedgerExchanges => new Exchange_Enum[]
+		{
+			Exchange_Enum.Bittrex, Exchange_Enum.CoinEx,
 		};
 		public static Exchange_Enum[] EquityExchanges => new Exchange_Enum[]
 		{
 			Exchange_Enum.InteractiveBrokers, Exchange_Enum.IEX, Exchange_Enum.TDAmeritrade,
+			Exchange_Enum.Discriminator_GradientEquity, Exchange_Enum.Discriminator_GradientEquityBase, Exchange_Enum.Discriminator_StandardEquity,
 		};
 
 		public static bool IsPreOpen(this OrderStatus orderStatus)
@@ -382,7 +407,7 @@ namespace VSLee.Utils.ExchangeBase
 		}
 		public static OrderStatus[] Warn => new OrderStatus[]
 		{ // don't include OrphanPermanent bc that is logged elsewhere
-			OrderStatus.Rejected, OrderStatus.Expired, 
+			OrderStatus.Rejected, OrderStatus.Expired,
 			OrderStatus.InvalidStatus, OrderStatus.Inactive,
 			OrderStatus.Canceled, OrderStatus.ApiCancelled,
 		};
