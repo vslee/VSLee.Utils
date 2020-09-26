@@ -98,7 +98,8 @@ namespace VSLee.Utils
 		public delegate void ProgressD(int numProcessed, int numSkipped, int modifiedTotal);
 		public event ProgressD ProgressMade;
 		public event ProgressD BGECompleted;
-		public event Action<TCustom> CustomEvent;
+		public event EventHandler<TCustom> CustomEvent;
+		public event EventHandler<TMessage> Message;
 		protected Predicate<CycleData> workCycle;
 		protected CancellationTokenSource cTokenSource = new CancellationTokenSource();
 		private SynchronizationContext syncContext = SynchronizationContext.Current;
@@ -151,7 +152,6 @@ namespace VSLee.Utils
 			public int TNumber { get; set; }
 		}
 
-		public event Action<TMessage> Message;
 
 		public BGETaskFullLocal(Predicate<CycleData> workCycle, string elementName, int numThreads, int numUnique,
 			TLocalState[] tLocals, Func<TQueuedData, TQueueKey> dataToKeyFunc) 
@@ -203,11 +203,11 @@ namespace VSLee.Utils
 					// raise message event
 					if (Message != null)
 					{
-						Message(mainThreadParams.Message);
+						Message(this, mainThreadParams.Message);
 					}
 					break;
 				case EventType.CustomEvent:
-					CustomEvent(mainThreadParams.CustomParam);
+					CustomEvent(this, mainThreadParams.CustomParam);
 					break;
 				default:
 					break;

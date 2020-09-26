@@ -85,9 +85,7 @@ namespace VSLee.Utils.ExchangeBase
 		Bittrex = 29,
 		BL3P = 32,
 		CEXIO = 34,
-		/// <summary>
-		/// coinbase pro AKA GDAX
-		/// </summary>
+		/// <summary> coinbase pro AKA GDAX </summary>
 		Coinbase = 36,
 		CoinEx = 38,
 		Digifinex = 40,
@@ -107,10 +105,15 @@ namespace VSLee.Utils.ExchangeBase
 
 		Backtest = 80, // + just one backtest for now, but may need to create separate ones in the future for diff data sources
 
-		// stock exchanges / brokers
-		IEX = 110,
-		InteractiveBrokers = 120,
-		TDAmeritrade = 130,
+		// stock exchanges / brokers / data sources
+		Alpaca = 110,
+		AlphaVantage = 115,
+		Dukascopy = 120,
+		IEX = 125,
+		InteractiveBrokers = 130,
+		Robinhood = 135,
+		TDAmeritrade = 140,
+		WRDS = 145,
 
 		// placeholders for discriminators
 		Discriminator_Base = 150,
@@ -137,41 +140,82 @@ namespace VSLee.Utils.ExchangeBase
 	public enum TimeInForce : byte
 	{
 		/// <summary>
-		/// Good 'til canceled.
+		/// Binance: Good 'til canceled.
+		/// IB: Good until canceled. The order will continue to work within the system and in the marketplace until it 
+		///		executes or is canceled. GTC orders will be automatically be cancelled under the following conditions: If a 
+		///		corporate action on a security results in a stock split (forward or reverse), exchange for shares, or 
+		///		distribution of shares. If you do not log into your IB account for 90 days.
+		///		At the end of the calendar quarter following the current quarter. For example, an order placed during the 
+		///		third quarter of 2011 will be canceled at the end of the first quarter of 2012. If the last day is a 
+		///		non-trading day, the cancellation will occur at the close of the final trading day of that quarter. For 
+		///		example, if the last day of the quarter is Sunday, the orders will be cancelled on the preceding Friday.
+		///		Orders that are modified will be assigned a new “Auto Expire” date consistent with the end of the calendar 
+		///		quarter following the current quarter.
+		///		Orders submitted to IB that remain in force for more than one day will not be reduced for dividends.To 
+		///		allow adjustment to your order price on ex-dividend date, consider using a Good-Til-Date/Time(GTD) or 
+		///		Good-after-Time/Date(GAT) order type, or a combination of the two.
 		/// </summary>
 		GTC = 10,
 
 		/// <summary>
-		/// Immediate or cancel.
+		/// Binance: Immediate or cancel.
 		/// </summary>
 		IOC = 20,
 
 		/// <summary>
-		/// Fill or kill.
+		/// Binance: Fill or kill.
 		/// </summary>
 		FOK = 30,
 
-		// TODO: Reconcile additional TIF from IB
+		/// <summary>
+		/// IB:  Using "Day" as the time in force for a Regular Trading Hours ("RTH") Only order specifies that the order 
+		///		will work throughout the trading day during regular trading hours until it is filled, is canceled by the user, 
+		///		or expires at the end of the trading day. (By default, the time in force for orders is set to "Day." Orders 
+		///		for some products are entered with a default restriction of Regular Trading Hours (RTH) Only to prevent orders 
+		///		from being executed during the pre- and post-market sessions).
+		///		A day order that is submitted after regular trading hours* with the order attribute of RTH will be held in the 
+		///		system and begin to work at the start of the next trading day. The order will be active during the next trading 
+		///		day until it is filled, is canceled by the user, or expires at the end of the trading day. IMPORTANT NOTE: You 
+		///		can add order attributes to any order or change default settings to specify that orders be activated, triggered, 
+		///		or filled outside of regular trading hours.
+		///		Note:   You can add order attributes to any order or change default settings to specify that orders be activated, 
+		///		triggered, or filled outside of regular trading hours.
+		///		* For TWS: Day orders submitted with “RTH ONLY” will be canceled between 4:00-4:05 pm. Day orders submitted after 
+		///		4:05 pm with “RTH ONLY” will be queued for the next day.
+		/// </summary>
+		DAY = 40,
+
+		/// <summary>
+		/// IB: Day until Canceled: similar to a day order, but instead of being canceled and removed from the trading 
+		///		screen at the end of the day, the order is deactivated. This means that the order is canceled AT THE 
+		///		EXCHANGE but remains on your trading screen to be re-transmitted whenever you click the Transmit button.
+		/// </summary>
+		DTC = 50,
 	}
 
 	public enum OrderStatus : byte
 	{
 		// internal program statuses (no official status on GDAX)
-		Created = 2, // prior to submission
+		/// <summary> prior to submission </summary>
+		CreatedNotReadyToSubmit = 5,
+		/// <summary> prior to submission </summary>
+		CreatedReadyToSubmit = 10,
+		/// <summary> prior to submission, but now out of the OrdersReadyToSubmit RBPQ </summary>
+		PreSubmitted = 15,
 		/// <summary>
 		/// prior to GDAX acknowledgement
-		/// IB (PendingSubmit, not Submitted - that maps to Open) not sent by TWS and should be 
-		/// explicitly set by the API developer when an order is submitted: order was 
-		/// sent from TWS, but confirmation has not been received that it has been 
+		/// IB (PendingSubmit, not Submitted - that maps to Open) not sent by TWS and should be
+		/// explicitly set by the API developer when an order is submitted: order was
+		/// sent from TWS, but confirmation has not been received that it has been
 		/// received by the destination. Most commonly because exchange is closed.
 		/// </summary>
-		Submitted = 4,
+		Submitted = 20,
 		/// <summary>
 		/// GDAX/Binance: submitted, but not accepted
 		/// </summary>
-		Rejected = 6,
-		SyntheticFill = 8, // internally filled
-
+		Rejected = 25,
+		SyntheticFill = 30, // internally filled
+		
 		// Exchange statuses
 		/// <summary>
 		/// GDAX: received, prior to being "Received"?
@@ -181,34 +225,34 @@ namespace VSLee.Utils.ExchangeBase
 		/// At that time the order is transmitted to the order destination as specified
 		/// (and the order status color will change).
 		/// </summary>
-		PendingReceived = 10,
+		PendingReceived = 35,
 		/// <summary>
 		/// GDAX (received): same as "received" realtime state
 		/// </summary>
-		Active = 12,
+		Active = 40,
 		/// <summary>
 		/// GDAX: now on the order book
 		/// Binance (New)
 		/// IB (Submitted): indicates that your order has been accepted at the order destination and is working.
 		/// </summary>
-		Open = 14,
+		Open = 45,
 		/// <summary>
 		/// GDAX: not in GDAX
 		/// Binance: order is still Open
 		/// IB: same
 		/// </summary>
-		PartiallyFilled = 16,
+		PartiallyFilled = 50,
 		/// <summary>
 		/// Binance: still open but soon to be closed
 		/// IB: (not sent by TWS and should be explicitly set by the API 
 		/// developer when an order is submitted)  request has been sent 
 		/// to cancel an order but confirmation has not been received of its cancellation.
 		/// </summary>
-		PendingCancel = 18,
+		PendingCancel = 55,
 		/// <summary>
 		/// GDAX/Binance: either cancelled or filled, and also either settled or not 
 		/// </summary>
-		DoneAmbiguous = 20,
+		DoneAmbiguous = 60,
 		// settled (settled is a actually a separate boolean field in GDAX)
 
 		/// <summary>
@@ -216,13 +260,13 @@ namespace VSLee.Utils.ExchangeBase
 		/// Binance:
 		/// IB: 
 		/// </summary>
-		Expired = 22,
+		Expired = 65,
 
 		/// <summary>
 		/// does have official GDAX stautus, but unable to parse
 		/// IB (Error, None):  No Order Status. not sent by TWS and should be explicitly set by the API developer when an error has occured
 		/// </summary>
-		InvalidStatus = 24, // unable to parse GDAX status
+		InvalidStatus = 70, // unable to parse GDAX status
 
 		/// <summary>
 		/// GDAX: does not exist
@@ -230,13 +274,13 @@ namespace VSLee.Utils.ExchangeBase
 		/// IB: indicates that the balance of your order has been confirmed canceled by the IB system.
 		/// This could occur unexpectedly when IB or the destination has rejected your order.
 		/// </summary>
-		Canceled = 26,
+		Canceled = 75,
 		/// <summary>
 		/// GDAX: does not exist
 		/// Binance:
 		/// IB: The order has been completely filled.
 		/// </summary>
-		Filled = 28,
+		Filled = 80,
 		/// <summary>
 		/// GDAX: does not exist
 		/// Binance: does not exist
@@ -246,26 +290,30 @@ namespace VSLee.Utils.ExchangeBase
 		/// - an order is placed manually in TWS while the exchange is closed.
 		/// - an order is blocked by TWS due to a precautionary setting and appears there in an untransmitted state
 		/// </summary>
-		Inactive = 30,
+		Inactive = 85,
 		/// <summary>
 		/// GDAX: does not exist
 		/// Binance: does not exist
 		/// IB: indicates order has not yet been sent to IB server, for instance 
 		/// if there is a delay in receiving the security definition. Uncommonly received.
 		/// </summary>
-		ApiPending = 32,
+		ApiPending = 90,
 		/// <summary>
 		/// GDAX: does not exist
 		/// Binance: does not exist
 		/// IB: after an order has been submitted and before it has been acknowledged, 
 		/// an API client can request its cancellation, producing this state.
 		/// </summary>
-		ApiCancelled = 34,
+		ApiCancelled = 95,
+		/// <summary>
+		/// Cancelled internally and never submitted
+		/// </summary>
+		InternalCancelled = 100,
 		/// <summary>
 		/// Only clientID no serverID and not found on server despite search.
 		/// - happens when order is submitted and then disconnects before server confirmation
 		/// </summary>
-		OrphanPermanent = 36,
+		OrphanPermanent = 105,
 	}
 
 	public static partial class EBEnumExtensionMethods
@@ -353,17 +401,18 @@ namespace VSLee.Utils.ExchangeBase
 		};
 		public static Exchange_Enum[] EquityExchanges => new Exchange_Enum[]
 		{
-			Exchange_Enum.InteractiveBrokers, Exchange_Enum.IEX, Exchange_Enum.TDAmeritrade,
+			Exchange_Enum.AlphaVantage, Exchange_Enum.Dukascopy, Exchange_Enum.InteractiveBrokers, 
+			Exchange_Enum.IEX, Exchange_Enum.TDAmeritrade, Exchange_Enum.WRDS,
 			Exchange_Enum.Discriminator_GradientEquity, Exchange_Enum.Discriminator_GradientEquityBase, Exchange_Enum.Discriminator_StandardEquity,
 		};
 
-		public static bool IsPreOpen(this OrderStatus orderStatus)
+		public static bool IsPreConfirmedByServer(this OrderStatus orderStatus)
 		{
-			return InPlay.Contains(orderStatus);
+			return PreConfirmedByServer.Contains(orderStatus);
 		}
-		public static OrderStatus[] PreOpen => new OrderStatus[]
+		public static OrderStatus[] PreConfirmedByServer => new OrderStatus[]
 		{
-			OrderStatus.Created, OrderStatus.Submitted, OrderStatus.PendingReceived,
+			OrderStatus.CreatedNotReadyToSubmit, OrderStatus.CreatedReadyToSubmit, OrderStatus.PreSubmitted, OrderStatus.Submitted, OrderStatus.PendingReceived,
 			OrderStatus.Active,
 		};
 		public static bool IsInPlay(this OrderStatus orderStatus)
@@ -372,13 +421,11 @@ namespace VSLee.Utils.ExchangeBase
 		}
 		public static OrderStatus[] InPlay => new OrderStatus[]
 		{
-			OrderStatus.Created, OrderStatus.Submitted, OrderStatus.PendingReceived,
+			OrderStatus.CreatedNotReadyToSubmit, OrderStatus.CreatedReadyToSubmit, OrderStatus.PreSubmitted, OrderStatus.Submitted, OrderStatus.PendingReceived,
 			OrderStatus.Active, OrderStatus.Open, OrderStatus.PartiallyFilled,  OrderStatus.PendingCancel,
 		};
 		public static bool IsSubmittedButNotDone(this OrderStatus orderStatus)
-		{
-			return SubmittedButNotDone.Contains(orderStatus);
-		}
+			=> SubmittedButNotDone.Contains(orderStatus);
 		public static OrderStatus[] SubmittedButNotDone => new OrderStatus[]
 		{
 			OrderStatus.Submitted, OrderStatus.PendingReceived, OrderStatus.ApiPending,
@@ -386,14 +433,19 @@ namespace VSLee.Utils.ExchangeBase
 		};
 		public static bool IsDone(this OrderStatus orderStatus)
 		{
-			return Done.Contains(orderStatus);
+			return Cancelled.Contains(orderStatus)
+				|| orderStatus == OrderStatus.Filled
+				|| orderStatus == OrderStatus.SyntheticFill;
+			// don't include PartialFilled bc that's not done yet
 		}
-		public static OrderStatus[] Done => new OrderStatus[]
+		public static bool IsCancelled(this OrderStatus orderStatus)
+			=> Cancelled.Contains(orderStatus);
+		public static OrderStatus[] Cancelled => new OrderStatus[]
 		{
 			OrderStatus.DoneAmbiguous, OrderStatus.SyntheticFill,
 			OrderStatus.Rejected, OrderStatus.Expired, 
 			//, OrderStatus.InvalidStatus, OrphanPermanent should not be part of this bc it could be active
-			OrderStatus.Canceled, OrderStatus.ApiCancelled,
+			OrderStatus.Canceled, OrderStatus.ApiCancelled, OrderStatus.InternalCancelled,
 			OrderStatus.Filled, OrderStatus.Inactive
 		};
 		/// <summary>
@@ -409,7 +461,7 @@ namespace VSLee.Utils.ExchangeBase
 		{ // don't include OrphanPermanent bc that is logged elsewhere
 			OrderStatus.Rejected, OrderStatus.Expired,
 			OrderStatus.InvalidStatus, OrderStatus.Inactive,
-			OrderStatus.Canceled, OrderStatus.ApiCancelled,
+			OrderStatus.Canceled, // don't include ApiCancelled bc that normally happens during program operation
 		};
 	}
 }

@@ -172,18 +172,20 @@ namespace VSLee.Utils
 			OnNotifyCollectionChangedReset();
 		}
 
-		public void RemoveFirst()
-		{
-			var first = m_UnderLyingLinkedList.First;
+		public T RemoveFirst()
+		{ // + TODO: change to Deque when implemented
+			var first = m_UnderLyingLinkedList.First.Value;
 			m_UnderLyingLinkedList.RemoveFirst();
 			CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, first, 0));
+			return first;
 		}
 
-		public void RemoveLast()
+		public T RemoveLast()
 		{
 			var last = m_UnderLyingLinkedList.Last.Value;
 			m_UnderLyingLinkedList.RemoveLast();
 			CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, last, m_UnderLyingLinkedList.Count));
+			return last;
 		}
 
 		/// <summary>

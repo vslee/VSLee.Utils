@@ -4,14 +4,18 @@ using System.Text;
 
 namespace VSLee.Utils.ExchangeBase
 {
-	public interface IOrderBook<T>
+	public interface IOrderBook<TPrice>
 	{
-		T Spread { get; }
+		TPrice Spread { get; }
 
-		T Midpoint { get; }
+		// + ideally would do VWAP
 
-		T BestBuy { get; }
+		TPrice MidpointPrice { get; }
 
-		T BestSell { get; }
+		TPrice BestBuyPrice { get; }
+
+		TPrice BestSellPrice { get; }
+
+		// + public TPrice GetBestOrderPrice(Side side) => side == Side.Buy ? BestBuyPrice : BestSellPrice; activate after merge
 	}
 }

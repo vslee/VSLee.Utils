@@ -15,12 +15,12 @@ using System.Diagnostics;
 namespace VSLee.Utils
 {// https://code.msdn.microsoft.com/Samples-for-Parallel-b4b76364/sourcecode?fileId=44488&pathId=1831994732
 	/// <summary>Provides a thread-safe priority queue data structure.</summary> 
-	/// <typeparam name="TKey">Specifies the type of keys used to prioritize values.</typeparam> 
-	/// <typeparam name="TValue">Specifies the type of elements in the queue.</typeparam> 
+	/// <typeparam name="TPriority">Specifies the type of keys used to prioritize values.</typeparam> 
+	/// <typeparam name="TElement">Specifies the type of elements in the queue.</typeparam> 
 	[DebuggerDisplay("Count={Count}")]
-	public class ConcurrentPriorityQueue<TKey, TValue> :
-		IProducerConsumerCollection<KeyValuePair<TKey, TValue>>
-		where TKey : IComparable<TKey>
+	public class ConcurrentPriorityQueue<TPriority, TElement> :
+		IProducerConsumerCollection<KeyValuePair<TPriority, TElement>>
+		where TPriority : IComparable<TPriority>
 	{
 		private readonly object _syncLock = new object();
 		private readonly MinBinaryHeap _minHeap = new MinBinaryHeap();
@@ -30,7 +30,7 @@ namespace VSLee.Utils
 
 		/// <summary>Initializes a new instance of the ConcurrentPriorityQueue class that contains elements copied from the specified collection.</summary> 
 		/// <param name="collection">The collection whose elements are copied to the new ConcurrentPriorityQueue.</param> 
-		public ConcurrentPriorityQueue(IEnumerable<KeyValuePair<TKey, TValue>> collection)
+		public ConcurrentPriorityQueue(IEnumerable<KeyValuePair<TPriority, TElement>> collection)
 		{
 			if (collection == null) throw new ArgumentNullException("collection");
 			foreach (var item in collection) _minHeap.Insert(item);
@@ -39,14 +39,14 @@ namespace VSLee.Utils
 		/// <summary>Adds the key/value pair to the priority queue.</summary> 
 		/// <param name="priority">The priority of the item to be added.</param> 
 		/// <param name="value">The item to be added.</param> 
-		public void Enqueue(TKey priority, TValue value)
+		public void Enqueue(TPriority priority, TElement value)
 		{
-			Enqueue(new KeyValuePair<TKey, TValue>(priority, value));
+			Enqueue(new KeyValuePair<TPriority, TElement>(priority, value));
 		}
 
 		/// <summary>Adds the key/value pair to the priority queue.</summary> 
 		/// <param name="item">The key/value pair to be added to the queue.</param> 
-		public void Enqueue(KeyValuePair<TKey, TValue> item)
+		public void Enqueue(KeyValuePair<TPriority, TElement> item)
 		{
 			lock (_syncLock) _minHeap.Insert(item);
 		}
@@ -59,9 +59,9 @@ namespace VSLee.Utils
 		/// <returns> 
 		/// true if an element was removed and returned from the queue succesfully; otherwise, false. 
 		/// </returns> 
-		public bool TryDequeue(out KeyValuePair<TKey, TValue> result)
+		public bool TryDequeue(out KeyValuePair<TPriority, TElement> result)
 		{
-			result = default(KeyValuePair<TKey, TValue>);
+			result = default;
 			lock (_syncLock)
 			{
 				if (_minHeap.Count > 0)
@@ -81,9 +81,9 @@ namespace VSLee.Utils
 		/// <returns> 
 		/// true if an element was returned from the queue succesfully; otherwise, false. 
 		/// </returns> 
-		public bool TryPeek(out KeyValuePair<TKey, TValue> result)
+		public bool TryPeek(out KeyValuePair<TPriority, TElement> result)
 		{
-			result = default(KeyValuePair<TKey, TValue>);
+			result = default(KeyValuePair<TPriority, TElement>);
 			lock (_syncLock)
 			{
 				if (_minHeap.Count > 0)
@@ -115,19 +115,19 @@ namespace VSLee.Utils
 		/// The zero-based index in array at which copying begins. 
 		/// </param> 
 		/// <remarks>The elements will not be copied to the array in any guaranteed order.</remarks> 
-		public void CopyTo(KeyValuePair<TKey, TValue>[] array, int index)
+		public void CopyTo(KeyValuePair<TPriority, TElement>[] array, int index)
 		{
 			lock (_syncLock) _minHeap.Items.CopyTo(array, index);
 		}
 
 		/// <summary>Copies the elements stored in the queue to a new array.</summary> 
 		/// <returns>A new array containing a snapshot of elements copied from the queue.</returns> 
-		public KeyValuePair<TKey, TValue>[] ToArray()
+		public KeyValuePair<TPriority, TElement>[] ToArray()
 		{
 			lock (_syncLock)
 			{
 				var clonedHeap = new MinBinaryHeap(_minHeap);
-				var result = new KeyValuePair<TKey, TValue>[_minHeap.Count];
+				var result = new KeyValuePair<TPriority, TElement>[_minHeap.Count];
 				for (int i = 0; i < result.Length; i++)
 				{
 					result[i] = clonedHeap.Remove();
@@ -141,7 +141,7 @@ namespace VSLee.Utils
 		/// <returns> 
 		/// true if the pair was added; otherwise, false. 
 		/// </returns> 
-		bool IProducerConsumerCollection<KeyValuePair<TKey, TValue>>.TryAdd(KeyValuePair<TKey, TValue> item)
+		bool IProducerConsumerCollection<KeyValuePair<TPriority, TElement>>.TryAdd(KeyValuePair<TPriority, TElement> item)
 		{
 			Enqueue(item);
 			return true;
@@ -155,7 +155,7 @@ namespace VSLee.Utils
 		/// <returns> 
 		/// true if an element was removed and returned from the queue succesfully; otherwise, false. 
 		/// </returns> 
-		bool IProducerConsumerCollection<KeyValuePair<TKey, TValue>>.TryTake(out KeyValuePair<TKey, TValue> item)
+		bool IProducerConsumerCollection<KeyValuePair<TPriority, TElement>>.TryTake(out KeyValuePair<TPriority, TElement> item)
 		{
 			return TryDequeue(out item);
 		}
@@ -167,10 +167,10 @@ namespace VSLee.Utils
 		/// reflect any updates to the collection after GetEnumerator was called. The enumerator is safe to 
 		/// use concurrently with reads from and writes to the queue. 
 		/// </remarks> 
-		public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+		public IEnumerator<KeyValuePair<TPriority, TElement>> GetEnumerator()
 		{
 			var arr = ToArray();
-			return ((IEnumerable<KeyValuePair<TKey, TValue>>)arr).GetEnumerator();
+			return ((IEnumerable<KeyValuePair<TPriority, TElement>>)arr).GetEnumerator();
 		}
 
 		/// <summary>Returns an enumerator that iterates through a collection.</summary> 
@@ -202,12 +202,12 @@ namespace VSLee.Utils
 		/// <summary>Implements a binary heap that prioritizes smaller values.</summary> 
 		private sealed class MinBinaryHeap
 		{
-			private readonly List<KeyValuePair<TKey, TValue>> _items;
+			private readonly List<KeyValuePair<TPriority, TElement>> _items;
 
 			/// <summary>Initializes an empty heap.</summary> 
 			public MinBinaryHeap()
 			{
-				_items = new List<KeyValuePair<TKey, TValue>>();
+				_items = new List<KeyValuePair<TPriority, TElement>>();
 			}
 
 			/// <summary>Initializes a heap as a copy of another heap instance.</summary> 
@@ -215,21 +215,21 @@ namespace VSLee.Utils
 			/// <remarks>Key/Value values are not deep cloned.</remarks> 
 			public MinBinaryHeap(MinBinaryHeap heapToCopy)
 			{
-				_items = new List<KeyValuePair<TKey, TValue>>(heapToCopy.Items);
+				_items = new List<KeyValuePair<TPriority, TElement>>(heapToCopy.Items);
 			}
 
 			/// <summary>Empties the heap.</summary> 
 			public void Clear() { _items.Clear(); }
 
 			/// <summary>Adds an item to the heap.</summary> 
-			public void Insert(TKey key, TValue value)
+			public void Insert(TPriority key, TElement value)
 			{
 				// Create the entry based on the provided key and value 
-				Insert(new KeyValuePair<TKey, TValue>(key, value));
+				Insert(new KeyValuePair<TPriority, TElement>(key, value));
 			}
 
 			/// <summary>Adds an item to the heap.</summary> 
-			public void Insert(KeyValuePair<TKey, TValue> entry)
+			public void Insert(KeyValuePair<TPriority, TElement> entry)
 			{
 				// Add the item to the list, making sure to keep track of where it was added. 
 				_items.Add(entry);
@@ -263,7 +263,7 @@ namespace VSLee.Utils
 			}
 
 			/// <summary>Returns the entry at the top of the heap.</summary> 
-			public KeyValuePair<TKey, TValue> Peek()
+			public KeyValuePair<TPriority, TElement> Peek()
 			{
 				// Returns the first item 
 				if (_items.Count == 0) throw new InvalidOperationException("The heap is empty.");
@@ -271,11 +271,11 @@ namespace VSLee.Utils
 			}
 
 			/// <summary>Removes the entry at the top of the heap.</summary> 
-			public KeyValuePair<TKey, TValue> Remove()
+			public KeyValuePair<TPriority, TElement> Remove()
 			{
 				// Get the first item and save it for later (this is what will be returned). 
 				if (_items.Count == 0) throw new InvalidOperationException("The heap is empty.");
-				KeyValuePair<TKey, TValue> toReturn = _items[0];
+				KeyValuePair<TPriority, TElement> toReturn = _items[0];
 
 				// Remove the first item if there will only be 0 or 1 items left after doing so.   
 				if (_items.Count <= 2) _items.RemoveAt(0);
@@ -341,7 +341,7 @@ namespace VSLee.Utils
 			/// <summary>Gets the number of objects stored in the heap.</summary> 
 			public int Count { get { return _items.Count; } }
 
-			internal List<KeyValuePair<TKey, TValue>> Items { get { return _items; } }
+			internal List<KeyValuePair<TPriority, TElement>> Items { get { return _items; } }
 		}
 	}
 }
