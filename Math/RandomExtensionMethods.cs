@@ -32,10 +32,10 @@ namespace VSLee.Utils
 		}
 
 		/// <summary>
-		/// 
+		/// generates a random number between the two decimal places specified
 		/// </summary>
 		/// <param name="rng"></param>
-		/// <param name="decimalPlacesToStart">number of zeors prior to first number after decimal point</param>
+		/// <param name="decimalPlacesToStart">number of zeros prior to first number after decimal point</param>
 		/// <param name="decimalPlacesToEnd">total number of digits after decimal point</param>
 		/// <returns>can be a negative number</returns>
 		public static decimal NextDecimal(this Random rng, int decimalPlacesToStart, int decimalPlacesToEnd)

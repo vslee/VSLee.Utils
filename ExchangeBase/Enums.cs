@@ -7,22 +7,34 @@ namespace VSLee.Utils.ExchangeBase
 { // C# byte: 0 to 255, SQL Server tinyint	0 to 255
 	public enum Side : byte
 	{
-		Buy = 2,
-		Sell = 4,
+		Buy = 10,
+		Sell = 20,
 		/// <summary>
 		/// IB: Sell Short as part of a combo leg
 		/// </summary>
-		SellShort = 6,
+		SellShort = 30,
 		/// <summary>
 		/// IB: Short Sale Exempt action.
 		/// SSHORTX allows some orders to be marked as exempt from the new SEC Rule 201
 		/// </summary>
-		SShortX = 8,
+		SShortX = 40,
+		/// <summary>
+		/// TDA: separate type here
+		/// </summary>
+		BuyToCover = 50,
+		/// <summary>
+		/// TDA: 
+		/// </summary>
+		Exchange = 60,
+		/// <summary>
+		/// TDA: 
+		/// </summary>
+		Excercise_Option = 70,
 		/// <summary>
 		/// IEX Hist: always
 		/// IB (Undefined)
 		/// </summary>
-		NotAvailable = 10
+		NotAvailable = 80,
 	}
 	public static partial class EBEnumExtensionMethods
 	{
@@ -52,21 +64,50 @@ namespace VSLee.Utils.ExchangeBase
 		// stop-loss-and-limit(price = stop loss price, price2 = limit price)
 		// settle-position
 
-		Market = 2, Limit = 4,
+		Market = 10, Limit = 20,
 
 		/// <summary>
 		/// IB: A market order that is submitted to execute as close to the closing price as possible.
 		/// Non US Futures, Non US Options, Stocks
 		/// </summary>
-		MarketOnClose = 6,
+		MarketOnClose = 30,
 
 		/// <summary>
 		/// IB: An LOC (Limit-on-Close) order that executes at the closing price if the closing price is at or better than the submitted limit price, according to the rules of the specific exchange. Otherwise the order will be cancelled. 
 		/// Non US Futures , Stocks
 		/// </summary>
-		LimitOnClose = 8,
+		LimitOnClose = 40,
 
 		// TODO: reconcile OrderTypes from IB, TDA, Kraken, etc...
+	}
+
+	public enum TDAOrderType : byte
+	{
+		// Market
+		Market = 0,
+		Stop_Market_GTC = 1,
+		Stop_Market_Day = 2,
+		MOO_BegOfDayMarket = 17,
+        Market_ConvertedFrom_MOO = 18,
+		MOC_EndOfDayMarket = 3,
+        Market_ConvertedFrom_MOC = 19,
+        EndOfBTSessionMarket = 4,
+
+		// Limit
+		Limit_GTC = 5,
+		Stop_Limit_GTC = 6,
+		Stop_Limit_Day = 7,
+		Limit_Day_Ext = 8,
+		Limit_GTC_Ext = 9,
+		Limit_Day = 10,
+
+		// TS
+		TS_Percent = 11,
+		TS_Dollar = 12,
+
+		// TD AMTD Acct deposits
+		Debit,
+		Credit,
 	}
 
 	public enum Exchange_Enum : byte
@@ -84,26 +125,32 @@ namespace VSLee.Utils.ExchangeBase
 		Bitstamp = 26,
 		Bittrex = 29,
 		BL3P = 32,
-		CEXIO = 34,
+		Bybit = 34,
+		CEXIO = 36,
 		/// <summary> coinbase pro AKA GDAX </summary>
-		Coinbase = 36,
-		CoinEx = 38,
-		Digifinex = 40,
-		Gemini = 42,
-		itBit = 44,
-		HitBTC = 46,
-		Huobi = 48,
-		Kraken = 50,
-		KuCoin = 52,
-		LBank = 54,
-		NDAX = 56,
-		OKCoin = 59,
-		OKEx = 61,
-		Poloniex = 64,
-		ThePit = 66,
-		ZBcom = 68,
+		Coinbase = 38,
+		CoinEx = 40,
+		Compound = 42,
+		CurveFinance = 44,
+		Digifinex = 46,
+		Gemini = 48,
+		itBit = 50,
+		HitBTC = 52,
+		Huobi = 54,
+		Kraken = 56,
+		KuCoin = 58,
+		LBank = 60,
+		NDAX = 62,
+		OKCoin = 64,
+		OKEx = 67,
+		Poloniex = 70,
+		Tokenion = 72,
+		ThePit = 74,
+		Uniswap = 76,
+		ZBcom = 78,
 
-		Backtest = 80, // + just one backtest for now, but may need to create separate ones in the future for diff data sources
+		BacktestGradient = 80,
+		BacktestStandard = 90,
 
 		// stock exchanges / brokers / data sources
 		Alpaca = 110,
@@ -111,24 +158,54 @@ namespace VSLee.Utils.ExchangeBase
 		Dukascopy = 120,
 		IEX = 125,
 		InteractiveBrokers = 130,
-		Robinhood = 135,
-		TDAmeritrade = 140,
-		WRDS = 145,
+		NasdaqWeb = 133,
+		NasdaqWebFile = 136,
+		QuantQuote = 139,
+		Robinhood = 142,
+		TDAmeritrade = 145,
+		WRDS = 146,
+		YahooWeb = 147,
+		YahooWebFile = 148,
 
 		// placeholders for discriminators
-		Discriminator_Base = 150,
+		No_Exchange = 150,
+		Discriminator_Base = 151,
 		Discriminator_StandardBase = 154,
 		Discriminator_Standard = 156,
+		Discriminator_StandardDay = 157,
 		Discriminator_StandardEquity = 158,
 		Discriminator_StandardCrypto = 160,
 		Discriminator_GradientBase = 162,
 		Discriminator_Gradient = 164,
+		Discriminator_GradientDay = 165,
 		Discriminator_GradientEquityBase = 166,
 		Discriminator_GradientEquity = 168,
 		Discriminator_GradientCryptoBase = 170,
 		Discriminator_GradientCrypto = 172,
 		Discriminator_ESLedger = 174,
 		Discriminator_BinanceBase = 176,
+	}
+
+	public enum ExpandedDiscriminator : byte
+	{
+		NoExpandedValue = 10,
+
+		BacktestGradient = 80,
+		BacktestStandard = 90,
+
+		Discriminator_Base = 150,
+		Discriminator_StandardBase = 154,
+		Discriminator_Standard = 156,
+		Discriminator_StandardDay = 157,
+		Discriminator_StandardEquity = 158,
+		Discriminator_StandardCrypto = 160,
+		Discriminator_GradientBase = 162,
+		Discriminator_Gradient = 164,
+		Discriminator_GradientDay = 165,
+		Discriminator_GradientEquityBase = 166,
+		Discriminator_GradientEquity = 168,
+		Discriminator_GradientCryptoBase = 170,
+		Discriminator_GradientCrypto = 172,
 	}
 
 	public enum Realm : byte
@@ -141,6 +218,8 @@ namespace VSLee.Utils.ExchangeBase
 	{
 		/// <summary>
 		/// Binance: Good 'til canceled.
+		/// Coinbase: Good till canceled orders remain open on the book until
+		///			  canceled. This is the default behavior if no policy is specified.
 		/// IB: Good until canceled. The order will continue to work within the system and in the marketplace until it 
 		///		executes or is canceled. GTC orders will be automatically be cancelled under the following conditions: If a 
 		///		corporate action on a security results in a stock split (forward or reverse), exchange for shares, or 
@@ -158,14 +237,27 @@ namespace VSLee.Utils.ExchangeBase
 		GTC = 10,
 
 		/// <summary>
-		/// Binance: Immediate or cancel.
+		/// Coinbase: Good till time orders remain open on the book until
+		///			  canceled or the allotted cancel_after is depleted on the
+		///			  matching engine. GTT orders are guaranteed to cancel before
+		///			  any other order is processed after the cancel_after timestamp
+		///			  which is returned by the API. A day is considered 24 hours.
 		/// </summary>
-		IOC = 20,
+		GTT = 20,
+
+		/// <summary>
+		/// Binance: Immediate or cancel.
+		/// Coinbse: Immediate or cancel orders instantly cancel the remaining
+		///			 size of the limit order instead of opening it on the book.
+		/// </summary>
+		IOC = 30,
 
 		/// <summary>
 		/// Binance: Fill or kill.
+		/// Coinbase: Fill or kill orders are rejected if the entire size
+		///			  cannot be matched.
 		/// </summary>
-		FOK = 30,
+		FOK = 40,
 
 		/// <summary>
 		/// IB:  Using "Day" as the time in force for a Regular Trading Hours ("RTH") Only order specifies that the order 
@@ -183,21 +275,21 @@ namespace VSLee.Utils.ExchangeBase
 		///		* For TWS: Day orders submitted with “RTH ONLY” will be canceled between 4:00-4:05 pm. Day orders submitted after 
 		///		4:05 pm with “RTH ONLY” will be queued for the next day.
 		/// </summary>
-		DAY = 40,
+		DAY = 50,
 
 		/// <summary>
 		/// IB: Day until Canceled: similar to a day order, but instead of being canceled and removed from the trading 
 		///		screen at the end of the day, the order is deactivated. This means that the order is canceled AT THE 
 		///		EXCHANGE but remains on your trading screen to be re-transmitted whenever you click the Transmit button.
 		/// </summary>
-		DTC = 50,
+		DTC = 60,
 	}
 
 	public enum OrderStatus : byte
 	{
 		// internal program statuses (no official status on GDAX)
-		/// <summary> prior to submission </summary>
-		CreatedNotReadyToSubmit = 5,
+		/// <summary> Order was just created but has not been inserted into DB. May be combined and deleted prior to insert. </summary>
+		TemporaryPriorToDBInsert = 5,
 		/// <summary> prior to submission </summary>
 		CreatedReadyToSubmit = 10,
 		/// <summary> prior to submission, but now out of the OrdersReadyToSubmit RBPQ </summary>
@@ -214,8 +306,22 @@ namespace VSLee.Utils.ExchangeBase
 		/// GDAX/Binance: submitted, but not accepted
 		/// </summary>
 		Rejected = 25,
-		SyntheticFill = 30, // internally filled
-		
+		/// <summary> internally filled </summary>
+		SyntheticFill = 30,
+		/// <summary>
+		/// Cancelled internally and never submitted
+		/// </summary>
+		CancelledInternalPriorToSubmit = 35,
+		/// <summary>
+		/// Only clientID no serverID and not found on server despite search.
+		/// - happens when order is submitted and then disconnects before server confirmation
+		/// </summary>
+		OrphanPermanent = 40,
+		/// <summary>
+		/// + need to implement setting OrderStatus during Gradient Backtesting
+		/// </summary>
+		GradientBacktest_Placeholder = 50,
+
 		// Exchange statuses
 		/// <summary>
 		/// GDAX: received, prior to being "Received"?
@@ -225,34 +331,35 @@ namespace VSLee.Utils.ExchangeBase
 		/// At that time the order is transmitted to the order destination as specified
 		/// (and the order status color will change).
 		/// </summary>
-		PendingReceived = 35,
+		PendingReceived = 60,
 		/// <summary>
+		/// a.k.a. PendingOpen or Received
 		/// GDAX (received): same as "received" realtime state
 		/// </summary>
-		Active = 40,
+		Active = 65,
 		/// <summary>
 		/// GDAX: now on the order book
 		/// Binance (New)
 		/// IB (Submitted): indicates that your order has been accepted at the order destination and is working.
 		/// </summary>
-		Open = 45,
+		Open = 70,
 		/// <summary>
 		/// GDAX: not in GDAX
 		/// Binance: order is still Open
 		/// IB: same
 		/// </summary>
-		PartiallyFilled = 50,
+		FilledPartiallyAndStillOpen = 75,
 		/// <summary>
 		/// Binance: still open but soon to be closed
 		/// IB: (not sent by TWS and should be explicitly set by the API 
 		/// developer when an order is submitted)  request has been sent 
 		/// to cancel an order but confirmation has not been received of its cancellation.
 		/// </summary>
-		PendingCancel = 55,
+		CancelPending = 80,
 		/// <summary>
 		/// GDAX/Binance: either cancelled or filled, and also either settled or not 
 		/// </summary>
-		DoneAmbiguous = 60,
+		DoneAmbiguous = 85,
 		// settled (settled is a actually a separate boolean field in GDAX)
 
 		/// <summary>
@@ -260,13 +367,13 @@ namespace VSLee.Utils.ExchangeBase
 		/// Binance:
 		/// IB: 
 		/// </summary>
-		Expired = 65,
+		Expired = 90,
 
 		/// <summary>
-		/// does have official GDAX stautus, but unable to parse
+		/// does have official GDAX status, but unable to parse
 		/// IB (Error, None):  No Order Status. not sent by TWS and should be explicitly set by the API developer when an error has occured
 		/// </summary>
-		InvalidStatus = 70, // unable to parse GDAX status
+		InvalidStatus = 95, // unable to parse GDAX status
 
 		/// <summary>
 		/// GDAX: does not exist
@@ -274,13 +381,30 @@ namespace VSLee.Utils.ExchangeBase
 		/// IB: indicates that the balance of your order has been confirmed canceled by the IB system.
 		/// This could occur unexpectedly when IB or the destination has rejected your order.
 		/// </summary>
-		Canceled = 75,
+		Canceled = 100,
 		/// <summary>
 		/// GDAX: does not exist
 		/// Binance:
 		/// IB: The order has been completely filled.
 		/// </summary>
-		Filled = 80,
+		Filled = 105,
+		/// <summary>
+		/// was pending cancel but got filled in the meantime, so cancel failed
+		/// </summary>
+		FilledFullyFailedCancel = 106,
+		/// <summary>
+		/// was pending cancel but got filled (partially) in the meantime, so cancel (partially) failed
+		/// </summary>
+		FilledPartiallyThenCancelled = 109,
+		/// <summary>
+		/// Filled while program was offline so did not catch fill
+		/// - this is caught when market conditions mean the order ought to have been filled
+		/// </summary>
+		FilledOfflineUncomfirmed = 107,
+		/// <summary>
+		/// Previous FilledOfflineUnconfirmed that has now been confirmed using trade history
+		/// </summary>
+		FilledOfflineConfirmed = 108,
 		/// <summary>
 		/// GDAX: does not exist
 		/// Binance: does not exist
@@ -290,34 +414,261 @@ namespace VSLee.Utils.ExchangeBase
 		/// - an order is placed manually in TWS while the exchange is closed.
 		/// - an order is blocked by TWS due to a precautionary setting and appears there in an untransmitted state
 		/// </summary>
-		Inactive = 85,
+		Inactive = 110,
 		/// <summary>
 		/// GDAX: does not exist
 		/// Binance: does not exist
-		/// IB: indicates order has not yet been sent to IB server, for instance 
+		/// IB (ApiPending): indicates order has not yet been sent to IB server, for instance 
 		/// if there is a delay in receiving the security definition. Uncommonly received.
 		/// </summary>
-		ApiPending = 90,
+		PendingInApi = 115,
 		/// <summary>
 		/// GDAX: does not exist
 		/// Binance: does not exist
-		/// IB: after an order has been submitted and before it has been acknowledged, 
+		/// IB (ApiCancelled): after an order has been submitted and before it has been acknowledged, 
 		/// an API client can request its cancellation, producing this state.
 		/// </summary>
-		ApiCancelled = 95,
+		CancelledByApi = 120,
+	}
+
+	public enum DoneReason : Byte
+	{
+		Filled = 10,
+		Cancelled = 20,
+		CancelledManually = 25,
+		/// <summary> provided only by IB </summary>
+		CancelledByTrader = 30,
+		CancelledByBroker = 40,
+		CancelledByBrokerMarginInitial = 50,
+		CancelledByBrokerRegT = 60,
+		CancelledByBrokerLiquidation = 70,
+		/// <summary> ultimately considered Rejected, so that's what the OrderStatus is </summary>
+		CancelledByTraderThenRejected = 75,
 		/// <summary>
-		/// Cancelled internally and never submitted
+		/// in Binance/IB (not in Coinbase)
+		/// Reason is stored in a separate enum: OrderRejectedReason
 		/// </summary>
-		InternalCancelled = 100,
+		Rejected = 80,
 		/// <summary>
-		/// Only clientID no serverID and not found on server despite search.
-		/// - happens when order is submitted and then disconnects before server confirmation
+		/// in Binance/IB (not in Coinbase)
 		/// </summary>
-		OrphanPermanent = 105,
+		Expired = 90,
+		/// <summary>
+		/// this DoneReason is set before the cancellation is even sent to the broker/exchange
+		/// </summary>
+		NoLongerReadyCancelledByTraderDB = 100,
+		CombinedWithNewOrders = 110,
+		CombinedWithNewOrdersAndPriceOverridden = 120,
+		InternalMatched = 130,
+	}
+	public enum NEPLStatus : byte
+	{
+		Not_Existent = 10,
+		Testing = 20,
+		Tested_NoEPCs = 30,
+		Tested_EPCs = 40,
+	}
+
+	public enum OHLC_Flag : byte
+	{
+		// Extended Hours
+		Pre_Market = 5, Post_Market = 10,
+
+		// Open
+		Open_OnTime = 20, Open_Late = 25, Open_Very_Late = 25,
+
+		// Intraday
+		Intraday = 40, Probable_Bad = 45,
+		/// <summary> daily is for 1 Day resolution OHLCs </summary>
+		Daily = 50,
+
+		// Close
+		Close_Very_Early = 70, Close_Early = 75, Close_OnTime = 80, Close_Late = 85,
+		Close_Very_Early_Holiday = 90, Close_Early_Holiday = 95, Close_OnTime_Holiday = 100, Close_Late_Holiday = 105,
+	}
+
+	public enum CPRStatus : byte
+	{
+		No_search_attempted = 10,
+		Found_DefaultSearch = 20,
+		Not_Found_Results_TooLow = 30,
+		Not_Found_Results_TooHigh = 40,
+		Not_Found_Depth_TooLow = 50,
+		Not_Found_No_Data = 60,
+	}
+
+	public enum CPR_DRS_Status : byte
+	{
+		No_search_attempted = 10,
+		Searching = 20,
+		Full_Found = 30,
+		Partial_Found = 40,
+		None_Found = 50,
+	}
+
+	public enum CPElement : byte
+	{
+		Bool1 = 10,
+		Bool2 = 20,
+		Int1 = 30,
+		Int2 = 40,
+		Int3 = 50,
+		Double1 = 60,
+		Double2 = 70,
+		Double3 = 80,
+	}
+
+	public enum CPR_DRS_CPT_Status : byte
+	{
+		No_search_attempted = 10,
+		Full_Parted = 20,
+		Partial_Parted = 30,
+		Unable_To_Part = 40,
+	}
+
+	public enum BFS_Test_Status : byte
+	{
+		No_search_attempted = 10,
+		SEs_Created = 20,
+		BEs_Tested = 30,
+		SEs_Statted = 40,
+		EPLs_ECed = 50,
+	}
+
+	public enum OrderTypePattern : byte
+	{   // order rules for OCA
+		//· expire must be the same for both legs 
+		//· ordtype cannot be Market for either leg 
+		//· symbol + action + ordertype cannot be the exact same for both legs
+		MEntry_Day__MStop_GTC = 10,
+		LEntry_Day__MStop_GTC = 20,
+		MEntry_Day__LStop_GTC = 30,
+		LEntry_Day__LStop_GTC = 40,
+		MEntry_Day__MOCExit = 50,
+		MOCEntry__M_DayExit = 60,
+		// + probably need to add a MOCEntry__MOCExit,
 	}
 
 	public static partial class EBEnumExtensionMethods
 	{
+		public static bool IsExt(this TDAOrderType orderType)
+		{
+			return Exts.Contains(orderType);
+		}
+
+		public static bool IsMarket(this TDAOrderType orderType)
+		{
+			return Markets.Contains(orderType);
+		}
+
+		public static bool IsMO(this TDAOrderType orderType)
+		{
+			return MOs.Contains(orderType);
+		}
+
+		public static TDAOrderType[] Exts
+		{
+			get { return new TDAOrderType[] {TDAOrderType.Limit_Day_Ext, TDAOrderType.Limit_GTC_Ext}; }
+		}
+
+		public static TDAOrderType[] Markets
+		{
+			get
+			{
+				return new TDAOrderType[]
+				{
+					TDAOrderType.Market, TDAOrderType.MOO_BegOfDayMarket, TDAOrderType.MOC_EndOfDayMarket,
+                    TDAOrderType.Market_ConvertedFrom_MOO, TDAOrderType.Market_ConvertedFrom_MOC,
+					TDAOrderType.Stop_Market_Day, TDAOrderType.Stop_Market_GTC
+				};
+			}
+		}
+
+        public static TDAOrderType[] MOs
+            => new TDAOrderType[] { TDAOrderType.MOO_BegOfDayMarket, TDAOrderType.MOC_EndOfDayMarket,
+                    TDAOrderType.Market_ConvertedFrom_MOO, TDAOrderType.Market_ConvertedFrom_MOC, };
+
+		/// <summary>
+		/// Entry is either MOC or EOD
+		/// </summary>
+		/// <param name="orderTypePattern"></param>
+		/// <returns></returns>
+		public static bool InvolvesEODEntry(this OrderTypePattern orderTypePattern)
+		{
+			return EODEntrys.Contains(orderTypePattern);
+		}
+
+		/// <summary>
+		/// Exit is either MOC or EOD
+		/// </summary>
+		/// <param name="orderTypePattern"></param>
+		/// <returns></returns>
+		public static bool InvolvesEODExit(this OrderTypePattern orderTypePattern)
+		{
+			return EODExits.Contains(orderTypePattern);
+		}
+
+		public static OrderTypePattern[] EODEntrys
+		{
+			get { return new OrderTypePattern[] {OrderTypePattern.MEntry_Day__MOCExit, OrderTypePattern.MOCEntry__M_DayExit}; }
+		}
+		public static OrderTypePattern[] EODExits
+		{
+			get { return new OrderTypePattern[] { OrderTypePattern.MEntry_Day__MOCExit, OrderTypePattern.MOCEntry__M_DayExit }; }
+		}
+
+		public static TDAOrderType EntryType(this OrderTypePattern orderTypePattern)
+		{
+			if (orderTypePattern == OrderTypePattern.MEntry_Day__MStop_GTC || orderTypePattern == OrderTypePattern.MEntry_Day__LStop_GTC || orderTypePattern == OrderTypePattern.MEntry_Day__MOCExit)
+				return TDAOrderType.Market;
+			else if (orderTypePattern == OrderTypePattern.LEntry_Day__MStop_GTC || orderTypePattern == OrderTypePattern.LEntry_Day__LStop_GTC)
+				return TDAOrderType.Limit_GTC;
+			else // if (orderTypePattern == OrderTypePattern.MOC__MEntry_Day)
+				return TDAOrderType.MOC_EndOfDayMarket;
+		}
+
+		public static TDAOrderType StopType(this OrderTypePattern orderTypePattern)
+		{
+			// + change MO and OM OTPs to have ExitType output instead of StopType
+			if (orderTypePattern == OrderTypePattern.MEntry_Day__MStop_GTC || orderTypePattern == OrderTypePattern.LEntry_Day__MStop_GTC)
+				return TDAOrderType.Stop_Market_GTC;
+			else if (orderTypePattern == OrderTypePattern.MEntry_Day__LStop_GTC || orderTypePattern == OrderTypePattern.LEntry_Day__LStop_GTC)
+				return TDAOrderType.Stop_Limit_GTC;
+			else //	orderTypePattern == OrderTypePattern.MEntry_Day__MOCExit || orderTypePattern == OrderTypePattern.MOCEntry__M_DayExit)
+				throw new Exception("Should not be using StopType() on this type of OTP, likly using OTOCA incorrectly");
+		}
+
+		public static TDAOrderType ExitType(this OrderTypePattern orderTypePattern)
+		{
+			if (orderTypePattern == OrderTypePattern.MEntry_Day__MOCExit)
+				return TDAOrderType.MOC_EndOfDayMarket;
+			else if (orderTypePattern == OrderTypePattern.MOCEntry__M_DayExit)
+				return TDAOrderType.Market;
+			else
+				return TDAOrderType.Limit_GTC; // seems like the rest are all just LimitGTC
+		}
+
+		public static String ShortName(this OrderTypePattern orderTypePattern)
+		{
+			switch (orderTypePattern)
+			{
+				case OrderTypePattern.MEntry_Day__MStop_GTC:
+					return "MM";
+				case OrderTypePattern.LEntry_Day__MStop_GTC:
+					return "LM";
+				case OrderTypePattern.MEntry_Day__LStop_GTC:
+					return "ML";
+				case OrderTypePattern.LEntry_Day__LStop_GTC:
+					return "LL";
+				case OrderTypePattern.MEntry_Day__MOCExit:
+					return "MO";
+				case OrderTypePattern.MOCEntry__M_DayExit:
+					return "OM";
+				default:
+					return "";
+			}
+		}
+
 		public static Exchange_Enum ParseExchangeEnum(this string exchangeString)
 		{
 			switch (exchangeString.ToLowerInvariant())
@@ -362,6 +713,7 @@ namespace VSLee.Utils.ExchangeBase
 			if (EquityExchanges.Contains(exchange)) return Realm.Equity;
 			throw new NotImplementedException($"Unexpected exchange in GetRealm() + {exchange}");
 		}
+
 		public static Exchange_Enum[] CryptoExchanges => new Exchange_Enum[]
 		{
 			Exchange_Enum.Binance, Exchange_Enum.BinanceDEX, Exchange_Enum.BinanceJersey, Exchange_Enum.BinanceUS,
@@ -406,47 +758,57 @@ namespace VSLee.Utils.ExchangeBase
 			Exchange_Enum.Discriminator_GradientEquity, Exchange_Enum.Discriminator_GradientEquityBase, Exchange_Enum.Discriminator_StandardEquity,
 		};
 
-		public static bool IsPreConfirmedByServer(this OrderStatus orderStatus)
+		public static bool IsPreSubmitted(this OrderStatus orderStatus)
 		{
-			return PreConfirmedByServer.Contains(orderStatus);
+			return PreSubmitted.Contains(orderStatus);
 		}
-		public static OrderStatus[] PreConfirmedByServer => new OrderStatus[]
+		public static OrderStatus[] PreSubmitted => new OrderStatus[]
 		{
-			OrderStatus.CreatedNotReadyToSubmit, OrderStatus.CreatedReadyToSubmit, OrderStatus.PreSubmitted, OrderStatus.Submitted, OrderStatus.PendingReceived,
-			OrderStatus.Active,
-		};
-		public static bool IsInPlay(this OrderStatus orderStatus)
-		{
-			return InPlay.Contains(orderStatus);
-		}
-		public static OrderStatus[] InPlay => new OrderStatus[]
-		{
-			OrderStatus.CreatedNotReadyToSubmit, OrderStatus.CreatedReadyToSubmit, OrderStatus.PreSubmitted, OrderStatus.Submitted, OrderStatus.PendingReceived,
-			OrderStatus.Active, OrderStatus.Open, OrderStatus.PartiallyFilled,  OrderStatus.PendingCancel,
+			OrderStatus.TemporaryPriorToDBInsert, OrderStatus.CreatedReadyToSubmit,
+			OrderStatus.PreSubmitted,
 		};
 		public static bool IsSubmittedButNotDone(this OrderStatus orderStatus)
-			=> SubmittedButNotDone.Contains(orderStatus);
-		public static OrderStatus[] SubmittedButNotDone => new OrderStatus[]
+			=> orderStatus.IsSubmittedButPreConfirmedByServer() || orderStatus.IsReceivedButNotDone();
+		public static bool IsSubmittedButPreConfirmedByServer(this OrderStatus orderStatus)
 		{
-			OrderStatus.Submitted, OrderStatus.PendingReceived, OrderStatus.ApiPending,
-			OrderStatus.Active, OrderStatus.Open, OrderStatus.PartiallyFilled,  OrderStatus.PendingCancel,
+			return SubmittedButPreConfirmedByServer.Contains(orderStatus);
+		}
+		public static OrderStatus[] SubmittedButPreConfirmedByServer => new OrderStatus[]
+		{
+			OrderStatus.Submitted, OrderStatus.PendingReceived,	OrderStatus.PendingInApi,
+		};
+		public static bool IsReceivedButNotDone(this OrderStatus orderStatus)
+			=> ReceivedButNotDone.Contains(orderStatus);
+		public static OrderStatus[] ReceivedButNotDone => new OrderStatus[]
+		{
+			OrderStatus.Active, OrderStatus.Open, OrderStatus.FilledPartiallyAndStillOpen,  OrderStatus.CancelPending,
+			OrderStatus.Inactive, // not currently active but can probably be re-activated
 		};
 		public static bool IsDone(this OrderStatus orderStatus)
+			=> orderStatus.IsFilled() || orderStatus.IsCancelled()
+			|| orderStatus == OrderStatus.OrphanPermanent || orderStatus == OrderStatus.DoneAmbiguous;
+		public static bool IsFilled(this OrderStatus orderStatus)
+			=> Filled.Contains(orderStatus);
+		public static OrderStatus[] Filled => new OrderStatus[]
 		{
-			return Cancelled.Contains(orderStatus)
-				|| orderStatus == OrderStatus.Filled
-				|| orderStatus == OrderStatus.SyntheticFill;
-			// don't include PartialFilled bc that's not done yet
-		}
+			OrderStatus.Filled,
+			OrderStatus.SyntheticFill,
+			OrderStatus.FilledFullyFailedCancel,
+			OrderStatus.FilledOfflineUncomfirmed,
+			OrderStatus.FilledOfflineConfirmed,
+			// don't include FilledPartiallyAndStillOpen bc that's not done yet
+			OrderStatus.FilledPartiallyThenCancelled,
+		};
 		public static bool IsCancelled(this OrderStatus orderStatus)
 			=> Cancelled.Contains(orderStatus);
 		public static OrderStatus[] Cancelled => new OrderStatus[]
 		{
-			OrderStatus.DoneAmbiguous, OrderStatus.SyntheticFill,
+			OrderStatus.SyntheticFill,
 			OrderStatus.Rejected, OrderStatus.Expired, 
 			//, OrderStatus.InvalidStatus, OrphanPermanent should not be part of this bc it could be active
-			OrderStatus.Canceled, OrderStatus.ApiCancelled, OrderStatus.InternalCancelled,
-			OrderStatus.Filled, OrderStatus.Inactive
+			OrderStatus.Canceled, OrderStatus.CancelledByApi, OrderStatus.CancelledInternalPriorToSubmit,
+			// OrderStatus.Inactive don't include inactive, bc these can probably be re-activated
+			OrderStatus.FilledPartiallyThenCancelled,
 		};
 		/// <summary>
 		/// Should warn/be aware of, since the program shouldn't be hitting these normally
@@ -462,6 +824,9 @@ namespace VSLee.Utils.ExchangeBase
 			OrderStatus.Rejected, OrderStatus.Expired,
 			OrderStatus.InvalidStatus, OrderStatus.Inactive,
 			OrderStatus.Canceled, // don't include ApiCancelled bc that normally happens during program operation
+			OrderStatus.FilledOfflineUncomfirmed,
+			OrderStatus.DoneAmbiguous,
+			OrderStatus.TemporaryPriorToDBInsert,
 		};
 	}
 }
