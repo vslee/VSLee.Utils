@@ -85,29 +85,29 @@ namespace VSLee.Utils.ExchangeBase
 	{
 		// Market
 		Market = 0,
-		Stop_Market_GTC = 1,
-		Stop_Market_Day = 2,
-		MOO_BegOfDayMarket = 17,
-        Market_ConvertedFrom_MOO = 18,
-		MOC_EndOfDayMarket = 3,
-        Market_ConvertedFrom_MOC = 19,
-        EndOfBTSessionMarket = 4,
+		Stop_Market_GTC = 2,
+		Stop_Market_Day = 4,
+		MOO_BegOfDayMarket = 6,
+        Market_ConvertedFrom_MOO = 8,
+		MOC_EndOfDayMarket = 10,
+        Market_ConvertedFrom_MOC = 12,
+        EndOfBTSessionMarket = 14,
 
 		// Limit
-		Limit_GTC = 5,
-		Stop_Limit_GTC = 6,
-		Stop_Limit_Day = 7,
-		Limit_Day_Ext = 8,
-		Limit_GTC_Ext = 9,
-		Limit_Day = 10,
+		Limit_GTC = 20,
+		Stop_Limit_GTC = 22,
+		Stop_Limit_Day = 24,
+		Limit_Day_Ext = 26,
+		Limit_GTC_Ext = 28,
+		Limit_Day = 30,
 
 		// TS
-		TS_Percent = 11,
-		TS_Dollar = 12,
+		TS_Percent = 40,
+		TS_Dollar = 42,
 
 		// TD AMTD Acct deposits
-		Debit,
-		Credit,
+		Debit = 50,
+		Credit = 52,
 	}
 
 	public enum Exchange_Enum : byte
@@ -125,32 +125,39 @@ namespace VSLee.Utils.ExchangeBase
 		Bitstamp = 26,
 		Bittrex = 29,
 		BL3P = 32,
-		Bybit = 34,
-		CEXIO = 36,
+		BtcTurk = 35,
+		Bybit = 37,
+		CEXIO = 39,
+		Chiliz = 41,
 		/// <summary> coinbase pro AKA GDAX </summary>
-		Coinbase = 38,
-		CoinEx = 40,
-		Compound = 42,
-		CurveFinance = 44,
-		Digifinex = 46,
-		Gemini = 48,
-		itBit = 50,
-		HitBTC = 52,
-		Huobi = 54,
-		Kraken = 56,
-		KuCoin = 58,
-		LBank = 60,
-		NDAX = 62,
-		OKCoin = 64,
-		OKEx = 67,
-		Poloniex = 70,
-		Tokenion = 72,
-		ThePit = 74,
-		Uniswap = 76,
-		ZBcom = 78,
+		Coinbase = 43,
+		CoinEx = 45,
+		Compound = 47,
+		CurveFinance = 49,
+		Digifinex = 51,
+		Dydx = 53,
+		Exante = 55,
+		FTX = 57,
+		FTXUS = 59,
+		Gemini = 61,
+		itBit = 63,
+		HitBTC = 65,
+		Huobi = 67,
+		Kraken = 69,
+		KuCoin = 71,
+		LBank = 73,
+		LiquidQuoine = 75,
+		NDAX = 77,
+		OKCoin = 79,
+		OKEx = 81,
+		Poloniex = 83,
+		Tokenlon = 85,
+		ThePit = 87,
+		Uniswap = 89,
+		ZBcom = 91,
 
-		BacktestGradient = 80,
-		BacktestStandard = 90,
+		BacktestGradient = 95,
+		BacktestStandard = 97,
 
 		// stock exchanges / brokers / data sources
 		Alpaca = 110,
@@ -169,49 +176,51 @@ namespace VSLee.Utils.ExchangeBase
 
 		// placeholders for discriminators
 		No_Exchange = 150,
-		Discriminator_Base = 151,
+		Discriminator_Base = 152,
 		Discriminator_StandardBase = 154,
 		Discriminator_Standard = 156,
-		Discriminator_StandardDay = 157,
-		Discriminator_StandardEquity = 158,
-		Discriminator_StandardCrypto = 160,
-		Discriminator_GradientBase = 162,
-		Discriminator_Gradient = 164,
-		Discriminator_GradientDay = 165,
-		Discriminator_GradientEquityBase = 166,
-		Discriminator_GradientEquity = 168,
-		Discriminator_GradientCryptoBase = 170,
-		Discriminator_GradientCrypto = 172,
-		Discriminator_ESLedger = 174,
-		Discriminator_BinanceBase = 176,
+		Discriminator_StandardDay = 158,
+		Discriminator_StandardEquity = 160,
+		Discriminator_StandardCrypto = 162,
+		Discriminator_GradientBase = 164,
+		Discriminator_Gradient = 166,
+		Discriminator_GradientDay = 168,
+		Discriminator_GradientEquityBase = 170,
+		Discriminator_GradientEquity = 172,
+		Discriminator_GradientCryptoBase = 174,
+		Discriminator_GradientCrypto = 176,
+		Discriminator_ESLedger = 178,
+		Discriminator_BinanceBase = 180,
 	}
 
 	public enum ExpandedDiscriminator : byte
 	{
 		NoExpandedValue = 10,
 
-		BacktestGradient = 80,
-		BacktestStandard = 90,
+		BacktestGradient = 95,
+		BacktestStandard = 97,
 
-		Discriminator_Base = 150,
+		Discriminator_Base = 152,
 		Discriminator_StandardBase = 154,
 		Discriminator_Standard = 156,
-		Discriminator_StandardDay = 157,
-		Discriminator_StandardEquity = 158,
-		Discriminator_StandardCrypto = 160,
-		Discriminator_GradientBase = 162,
-		Discriminator_Gradient = 164,
-		Discriminator_GradientDay = 165,
-		Discriminator_GradientEquityBase = 166,
-		Discriminator_GradientEquity = 168,
-		Discriminator_GradientCryptoBase = 170,
-		Discriminator_GradientCrypto = 172,
+		Discriminator_StandardDay = 158,
+		Discriminator_StandardEquity = 160,
+		Discriminator_StandardCrypto = 162,
+		Discriminator_GradientBase = 164,
+		Discriminator_Gradient = 166,
+		Discriminator_GradientDay = 168,
+		Discriminator_GradientEquityBase = 170,
+		Discriminator_GradientEquity = 172,
+		Discriminator_GradientCryptoBase = 174,
+		Discriminator_GradientCrypto = 176,
+		Discriminator_ESLedger = 178,
+		Discriminator_BinanceBase = 180,
 	}
 
 	public enum Realm : byte
 	{
-		Equity = 2,
-		Crypto = 4,
+		Equity = 10,
+		Crypto = 20,
 	}
 
 	public enum TimeInForce : byte
@@ -391,7 +400,7 @@ namespace VSLee.Utils.ExchangeBase
 		/// <summary>
 		/// was pending cancel but got filled in the meantime, so cancel failed
 		/// </summary>
-		FilledFullyFailedCancel = 106,
+		FilledFullyFailedCancel = 107,
 		/// <summary>
 		/// was pending cancel but got filled (partially) in the meantime, so cancel (partially) failed
 		/// </summary>
@@ -400,11 +409,11 @@ namespace VSLee.Utils.ExchangeBase
 		/// Filled while program was offline so did not catch fill
 		/// - this is caught when market conditions mean the order ought to have been filled
 		/// </summary>
-		FilledOfflineUncomfirmed = 107,
+		FilledOfflineUncomfirmed = 111,
 		/// <summary>
 		/// Previous FilledOfflineUnconfirmed that has now been confirmed using trade history
 		/// </summary>
-		FilledOfflineConfirmed = 108,
+		FilledOfflineConfirmed = 113,
 		/// <summary>
 		/// GDAX: does not exist
 		/// Binance: does not exist
@@ -414,21 +423,21 @@ namespace VSLee.Utils.ExchangeBase
 		/// - an order is placed manually in TWS while the exchange is closed.
 		/// - an order is blocked by TWS due to a precautionary setting and appears there in an untransmitted state
 		/// </summary>
-		Inactive = 110,
+		Inactive = 120,
 		/// <summary>
 		/// GDAX: does not exist
 		/// Binance: does not exist
 		/// IB (ApiPending): indicates order has not yet been sent to IB server, for instance 
 		/// if there is a delay in receiving the security definition. Uncommonly received.
 		/// </summary>
-		PendingInApi = 115,
+		PendingInApi = 122,
 		/// <summary>
 		/// GDAX: does not exist
 		/// Binance: does not exist
 		/// IB (ApiCancelled): after an order has been submitted and before it has been acknowledged, 
 		/// an API client can request its cancellation, producing this state.
 		/// </summary>
-		CancelledByApi = 120,
+		CancelledByApi = 124,
 	}
 
 	public enum DoneReason : Byte
