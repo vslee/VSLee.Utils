@@ -1,22 +1,33 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VSLee.Utils", "VSLee.Utils.csproj", "{D6C60B47-1ED9-44D1-966B-9211BC345641}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0E5858CF-00C1-4CA5-80CB-A472C74D51FA}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\dotnetcore.yml = .github\workflows\dotnetcore.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		PreRelease|Any CPU = PreRelease|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D6C60B47-1ED9-44D1-966B-9211BC345641}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D6C60B47-1ED9-44D1-966B-9211BC345641}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6C60B47-1ED9-44D1-966B-9211BC345641}.PreRelease|Any CPU.ActiveCfg = PreRelease|Any CPU
+		{D6C60B47-1ED9-44D1-966B-9211BC345641}.PreRelease|Any CPU.Build.0 = PreRelease|Any CPU
 		{D6C60B47-1ED9-44D1-966B-9211BC345641}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6C60B47-1ED9-44D1-966B-9211BC345641}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {73D56FCE-9DDA-4EFF-8332-6A56C7B8D8C9}
 	EndGlobalSection
 EndGlobal

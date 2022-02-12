@@ -1,0 +1,26 @@
+name: build and push to Github Packages
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    # also works with windows-latest and macos-latest
+
+    steps:
+        - name: Checkout repository
+        - uses: actions/checkout@v2
+        # Authenticates packages to push to GPR
+        - uses: actions/setup-dotnet@v1 # https://github.com/actions/setup-dotnet
+          with:
+            dotnet-version: '6.0' # SDK Version to use.
+            source-url: https://nuget.pkg.github.com/vslee/index.json
+          env:
+            NUGET_AUTH_TOKEN: ${{secrets.GHPackages_TOKEN}}
+        - name: Build with dotnet and create prerelease nupkg
+        - run: dotnet build --configuration PreRelease --version-suffix prerelease-$(date +%Y%m%d%H%M%S)
+        #- name: Create the package (don't need to do this since NuGet is already generated on build)
+        #  run: dotnet pack --configuration Release VSLee.Utils
+        - name: Publish the package to GPR
+          run: dotnet nuget push bin/Release/*.nupkg
