@@ -3,7 +3,7 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Configurations>Debug;Release;PreRelease</Configurations>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<PackageId>VSLee.IEXSharp</PackageId>
+		<PackageId>VSLee.Utils</PackageId>
 		<VersionPrefix>1.0.0</VersionPrefix>
 		<Authors>Victor Lee</Authors>
 		<Company />
