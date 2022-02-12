@@ -24,4 +24,4 @@ jobs:
         #- name: Create the package (don't need to do this since NuGet is already generated on build)
         #  run: dotnet pack --configuration Release VSLee.Utils
         - name: Publish the package to GPR
-          run: dotnet nuget push bin/Release/*.nupkg
+          run: dotnet nuget push bin/PreRelease/*.nupkg
