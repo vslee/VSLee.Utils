@@ -121,43 +121,48 @@ namespace VSLee.Utils.ExchangeBase
 		Bitfinex = 14,
 		BitFlyer = 17,
 		Bithumb = 20,
-		BitMEX = 23,
-		Bitstamp = 26,
-		Bittrex = 29,
-		BL3P = 32,
-		BtcTurk = 35,
-		Bybit = 37,
-		CEXIO = 39,
-		Chiliz = 41,
+		BitMax = 23,
+		BitMEX = 26,
+		Bitstamp = 29,
+		Bittrex = 32,
+		BL3P = 35,
+		BtcTurk = 38,
+		Bybit = 41,
+		CEXIO = 43,
+		Chiliz = 45,
 		/// <summary> coinbase pro AKA GDAX </summary>
-		Coinbase = 43,
-		CoinEx = 45,
-		Compound = 47,
-		CurveFinance = 49,
-		Digifinex = 51,
-		Dydx = 53,
-		Exante = 55,
-		FTX = 57,
-		FTXUS = 59,
-		Gemini = 61,
-		itBit = 63,
-		HitBTC = 65,
-		Huobi = 67,
-		Kraken = 69,
-		KuCoin = 71,
-		LBank = 73,
-		LiquidQuoine = 75,
-		NDAX = 77,
-		OKCoin = 79,
-		OKEx = 81,
-		Poloniex = 83,
-		Tokenlon = 85,
-		ThePit = 87,
-		Uniswap = 89,
-		ZBcom = 91,
+		Coinbase = 47,
+		CoinEx = 49,
+		Coinzo = 51,
+		Compound = 53,
+		CurveFinance = 55,
+		Digifinex = 57,
+		Dydx = 59,
+		Exante = 61,
+		FTX = 63,
+		FTXUS = 64,
+		GateIO = 66,
+		Gemini = 68,
+		itBit = 70,
+		HitBTC = 72,
+		Huobi = 74,
+		Kraken = 76,
+		KuCoin = 78,
+		LBank = 80,
+		LiquidQuoine = 82,
+		LiveCoin = 84,
+		NDAX = 86,
+		OKCoin = 88,
+		OKEx = 90,
+		Paribu = 92,
+		Poloniex = 94,
+		Tokenlon = 96,
+		ThePit = 98,
+		Uniswap = 100,
+		ZBcom = 102,
 
-		BacktestGradient = 95,
-		BacktestStandard = 97,
+		BacktestGradient = 106,
+		BacktestStandard = 108,
 
 		// stock exchanges / brokers / data sources
 		Alpaca = 110,
@@ -197,8 +202,8 @@ namespace VSLee.Utils.ExchangeBase
 	{
 		NoExpandedValue = 10,
 
-		BacktestGradient = 95,
-		BacktestStandard = 97,
+		BacktestGradient = 106,
+		BacktestStandard = 108,
 
 		Discriminator_Base = 152,
 		Discriminator_StandardBase = 154,
@@ -680,41 +685,44 @@ namespace VSLee.Utils.ExchangeBase
 
 		public static Exchange_Enum ParseExchangeEnum(this string exchangeString)
 		{
-			switch (exchangeString.ToLowerInvariant())
-			{
-				case "binance": return Exchange_Enum.Binance;
-				case "binancedex": return Exchange_Enum.BinanceDEX;
-				case "binancejersey": return Exchange_Enum.BinanceJersey;
-				case "binanceus": return Exchange_Enum.BinanceUS;
-				case "bitblinx": return Exchange_Enum.BitBlinx;
-				case "bitfinex": return Exchange_Enum.Bitfinex;
-				case "bitflyer": return Exchange_Enum.BitFlyer;
-				case "bithumb": return Exchange_Enum.Bithumb;
-				case "bitmex": return Exchange_Enum.BitMEX;
-				case "bitstamp": return Exchange_Enum.Bitstamp;
-				case "bittrex": return Exchange_Enum.Bittrex;
-				case "bl3p": return Exchange_Enum.BL3P;
-				case "cexio": return Exchange_Enum.CEXIO;
-				case "coinbase": // will automatically fall through to gdax
-				case "gdax": return Exchange_Enum.Coinbase;
-				case "coinex": return Exchange_Enum.CoinEx;
-				case "digifinex": return Exchange_Enum.Digifinex;
-				case "gemini": return Exchange_Enum.Gemini;
-				case "itbit": return Exchange_Enum.itBit;
-				case "hitbtc": return Exchange_Enum.HitBTC;
-				case "huobi": return Exchange_Enum.Huobi;
-				case "kraken": return Exchange_Enum.Kraken;
-				case "kucoin": return Exchange_Enum.KuCoin;
-				case "lbank": return Exchange_Enum.LBank;
-				case "ndax": return Exchange_Enum.NDAX;
-				case "okcoin": return Exchange_Enum.OKCoin;
-				case "okex": return Exchange_Enum.OKEx;
-				case "poloniex": return Exchange_Enum.Poloniex;
-				case "thepit": return Exchange_Enum.ThePit;
-				case "zbcom": return Exchange_Enum.ZBcom;
-				case "discriminator_gradientequity": return Exchange_Enum.Discriminator_GradientEquity;
-				default: throw new NotImplementedException("unable to parse exchangeString: " + exchangeString);
-			}
+			if (Enum.TryParse<Exchange_Enum>(exchangeString, true, out var exchange))
+				return exchange;
+			else switch (exchangeString.ToLowerInvariant())
+				{
+					//case "binance": return Exchange_Enum.Binance;
+					//case "binancedex": return Exchange_Enum.BinanceDEX;
+					//case "binancejersey": return Exchange_Enum.BinanceJersey;
+					//case "binanceus": return Exchange_Enum.BinanceUS;
+					//case "bitblinx": return Exchange_Enum.BitBlinx;
+					//case "bitfinex": return Exchange_Enum.Bitfinex;
+					//case "bitflyer": return Exchange_Enum.BitFlyer;
+					//case "bithumb": return Exchange_Enum.Bithumb;
+					//case "bitmex": return Exchange_Enum.BitMEX;
+					//case "bitstamp": return Exchange_Enum.Bitstamp;
+					//case "bittrex": return Exchange_Enum.Bittrex;
+					//case "bl3p": return Exchange_Enum.BL3P;
+					//case "cexio": return Exchange_Enum.CEXIO;
+					case "coinbase": // will automatically fall through to gdax
+					case "coinbasepro": // will automatically fall through to gdax
+					case "gdax": return Exchange_Enum.Coinbase;
+					//case "coinex": return Exchange_Enum.CoinEx;
+					//case "digifinex": return Exchange_Enum.Digifinex;
+					//case "gemini": return Exchange_Enum.Gemini;
+					//case "itbit": return Exchange_Enum.itBit;
+					//case "hitbtc": return Exchange_Enum.HitBTC;
+					//case "huobi": return Exchange_Enum.Huobi;
+					//case "kraken": return Exchange_Enum.Kraken;
+					//case "kucoin": return Exchange_Enum.KuCoin;
+					//case "lbank": return Exchange_Enum.LBank;
+					//case "ndax": return Exchange_Enum.NDAX;
+					//case "okcoin": return Exchange_Enum.OKCoin;
+					//case "okex": return Exchange_Enum.OKEx;
+					//case "poloniex": return Exchange_Enum.Poloniex;
+					//case "thepit": return Exchange_Enum.ThePit;
+					//case "zbcom": return Exchange_Enum.ZBcom;
+					//case "discriminator_gradientequity": return Exchange_Enum.Discriminator_GradientEquity;
+					default: throw new NotImplementedException("unable to parse exchangeString: " + exchangeString);
+				}
 		}
 		public static Realm GetRealm(this Exchange_Enum exchange)
 		{
