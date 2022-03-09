@@ -113,113 +113,124 @@ namespace VSLee.Utils.ExchangeBase
 	public enum Exchange_Enum : byte
 	{
 		// crypto exchanges
-		Binance = 5,
-		BinanceDEX = 6,
-		BinanceJersey = 7,
-		BinanceUS = 8,
-		BitBlinx = 11,
-		Bitfinex = 14,
-		BitFlyer = 17,
-		Bithumb = 20,
-		BitMax = 23,
-		BitMEX = 26,
-		Bitstamp = 29,
-		Bittrex = 32,
-		BL3P = 35,
-		BtcTurk = 38,
-		Bybit = 41,
-		CEXIO = 43,
-		Chiliz = 45,
+		ApolloX = 5,
+		Binance = 7,
+		BinanceDEX = 8,
+		BinanceJersey = 9,
+		BinanceTR = 10,
+		BinanceUS = 11,
+		BitBlinx = 14,
+		Bitfinex = 17,
+		BitFlyer = 20,
+		Bithumb = 23,
+		BitMax = 26,
+		BitMEX = 29,
+		Bitstamp = 31,
+		Bittrex = 34,
+		BL3P = 37,
+		BlockchainCom = 40,
+		BTCEX = 43,
+		BtcTurk = 46,
+		Bybit = 49,
+		CEXIO = 51,
+		Chiliz = 53,
 		/// <summary> coinbase pro AKA GDAX </summary>
-		Coinbase = 47,
-		CoinEx = 49,
-		Coinzo = 51,
-		Compound = 53,
-		CurveFinance = 55,
-		Digifinex = 57,
-		Dydx = 59,
-		Exante = 61,
-		FTX = 63,
-		FTXUS = 64,
-		GateIO = 66,
-		Gemini = 68,
-		itBit = 70,
-		HitBTC = 72,
-		Huobi = 74,
-		Kraken = 76,
-		KuCoin = 78,
-		LBank = 80,
-		LiquidQuoine = 82,
-		LiveCoin = 84,
-		NDAX = 86,
-		OKCoin = 88,
-		OKEx = 90,
-		Paribu = 92,
-		Poloniex = 94,
-		Tokenlon = 96,
-		ThePit = 98,
-		Uniswap = 100,
-		ZBcom = 102,
+		Coinbase = 56,
+		Coincheck = 59,
+		CoinEx = 61,
+		Coinlist = 64,
+		Coinone = 67,
+		Coinzo = 70,
+		Compound = 73,
+		CryptoCom = 75,
+		CurveFinance = 79,
+		Digifinex = 81,
+		Dydx = 83,
+		Exante = 85,
+		FTX = 87,
+		FTXUS = 88,
+		GateIO = 90,
+		Gemini = 92,
+		itBit = 94,
+		HitBTC = 96,
+		Huobi = 98,
+		Kraken = 100,
+		KuCoin = 102,
+		LBank = 104,
+		LiquidQuoine = 106,
+		LiveCoin = 108,
+		MEXC = 110,
+		NDAX = 112,
+		OKCoin = 114,
+		OKEx = 118,
+		Paribu = 120,
+		Poloniex = 122,
+		Tokenlon = 124,
+		ThePit = 126,
+		Uniswap = 128,
+		Upbit = 130,
+		ZBcom = 132,
 
-		BacktestGradient = 106,
-		BacktestStandard = 108,
+		BacktestGradient = 135,
+		BacktestStandard = 145,
 
 		// stock exchanges / brokers / data sources
-		Alpaca = 110,
-		AlphaVantage = 115,
-		Dukascopy = 120,
-		IEX = 125,
-		InteractiveBrokers = 130,
-		NasdaqWeb = 133,
-		NasdaqWebFile = 136,
-		QuantQuote = 139,
-		Robinhood = 142,
-		TDAmeritrade = 145,
-		WRDS = 146,
-		YahooWeb = 147,
-		YahooWebFile = 148,
+		Alpaca = 150,
+		AlphaVantage = 154,
+		Dukascopy = 158,
+		IEX = 162,
+		InteractiveBrokers = 166,
+		NasdaqWeb = 170,
+		NasdaqWebFile = 174,
+		QuantQuote = 178,
+		Robinhood = 182,
+		TDAmeritrade = 186,
+		WRDS = 190,
+		YahooWeb = 194,
+		YahooWebFile = 198,
 
 		// placeholders for discriminators
-		No_Exchange = 150,
-		Discriminator_Base = 152,
-		Discriminator_StandardBase = 154,
-		Discriminator_Standard = 156,
-		Discriminator_StandardDay = 158,
-		Discriminator_StandardEquity = 160,
-		Discriminator_StandardCrypto = 162,
-		Discriminator_GradientBase = 164,
-		Discriminator_Gradient = 166,
-		Discriminator_GradientDay = 168,
-		Discriminator_GradientEquityBase = 170,
-		Discriminator_GradientEquity = 172,
-		Discriminator_GradientCryptoBase = 174,
-		Discriminator_GradientCrypto = 176,
-		Discriminator_ESLedger = 178,
-		Discriminator_BinanceBase = 180,
+		No_Exchange = 200,
+		Discriminator_Base = 202,
+		Discriminator_StandardBase = 204,
+		Discriminator_Standard = 206,
+		Discriminator_StandardDay = 208,
+		Discriminator_StandardEquity = 210,
+		Discriminator_StandardCrypto = 212,
+		Discriminator_GradientBase = 214,
+		Discriminator_Gradient = 216,
+		Discriminator_GradientDay = 218,
+		Discriminator_GradientEquityBase = 220,
+		Discriminator_GradientEquity = 222,
+		Discriminator_GradientCryptoBase = 224,
+		Discriminator_GradientCrypto = 226,
+		Discriminator_ESLedger = 228,
+		Discriminator_BinanceBase = 230,
 	}
 
 	public enum ExpandedDiscriminator : byte
 	{
-		NoExpandedValue = 10,
+		NoExpandedValue = 3,
 
-		BacktestGradient = 106,
-		BacktestStandard = 108,
+		BacktestGradient = 135,
+		BacktestStandard = 145,
 
-		Discriminator_Base = 152,
-		Discriminator_StandardBase = 154,
-		Discriminator_Standard = 156,
-		Discriminator_StandardDay = 158,
-		Discriminator_StandardEquity = 160,
-		Discriminator_StandardCrypto = 162,
-		Discriminator_GradientBase = 164,
-		Discriminator_Gradient = 166,
-		Discriminator_GradientDay = 168,
-		Discriminator_GradientEquityBase = 170,
-		Discriminator_GradientEquity = 172,
-		Discriminator_GradientCryptoBase = 174,
-		Discriminator_GradientCrypto = 176,
-		Discriminator_ESLedger = 178,
-		Discriminator_BinanceBase = 180,
+		No_Exchange = 200,
+		Discriminator_Base = 202,
+		Discriminator_StandardBase = 204,
+		Discriminator_Standard = 206,
+		Discriminator_StandardDay = 208,
+		Discriminator_StandardEquity = 210,
+		Discriminator_StandardCrypto = 212,
+		Discriminator_GradientBase = 214,
+		Discriminator_Gradient = 216,
+		Discriminator_GradientDay = 218,
+		Discriminator_GradientEquityBase = 220,
+		Discriminator_GradientEquity = 222,
+		Discriminator_GradientCryptoBase = 224,
+		Discriminator_GradientCrypto = 226,
+		Discriminator_ESLedger = 228,
+		Discriminator_BinanceBase = 230,
 	}
 
 	public enum Realm : byte
@@ -304,10 +315,12 @@ namespace VSLee.Utils.ExchangeBase
 		// internal program statuses (no official status on GDAX)
 		/// <summary> Order was just created but has not been inserted into DB. May be combined and deleted prior to insert. </summary>
 		TemporaryPriorToDBInsert = 5,
+		/// <summary> in DB but waiting for entry order to execute prior to submitting normal orders </summary>
+		WaitingForEntryOrder = 10,
 		/// <summary> prior to submission </summary>
-		CreatedReadyToSubmit = 10,
+		CreatedReadyToSubmit = 15,
 		/// <summary> prior to submission, but now out of the OrdersReadyToSubmit RBPQ </summary>
-		PreSubmitted = 15,
+		PreSubmitted = 20,
 		/// <summary>
 		/// prior to GDAX acknowledgement
 		/// IB (PendingSubmit, not Submitted - that maps to Open) not sent by TWS and should be
@@ -315,22 +328,22 @@ namespace VSLee.Utils.ExchangeBase
 		/// sent from TWS, but confirmation has not been received that it has been
 		/// received by the destination. Most commonly because exchange is closed.
 		/// </summary>
-		Submitted = 20,
+		Submitted = 25,
 		/// <summary>
 		/// GDAX/Binance: submitted, but not accepted
 		/// </summary>
-		Rejected = 25,
+		Rejected = 30,
 		/// <summary> internally filled </summary>
-		SyntheticFill = 30,
+		SyntheticFill = 35,
 		/// <summary>
 		/// Cancelled internally and never submitted
 		/// </summary>
-		CancelledInternalPriorToSubmit = 35,
+		CancelledInternalPriorToSubmit = 40,
 		/// <summary>
 		/// Only clientID no serverID and not found on server despite search.
 		/// - happens when order is submitted and then disconnects before server confirmation
 		/// </summary>
-		OrphanPermanent = 40,
+		OrphanPermanent = 45,
 		/// <summary>
 		/// + need to implement setting OrderStatus during Gradient Backtesting
 		/// </summary>
@@ -405,20 +418,20 @@ namespace VSLee.Utils.ExchangeBase
 		/// <summary>
 		/// was pending cancel but got filled in the meantime, so cancel failed
 		/// </summary>
-		FilledFullyFailedCancel = 107,
+		FilledFullyFailedCancel = 110,
 		/// <summary>
 		/// was pending cancel but got filled (partially) in the meantime, so cancel (partially) failed
 		/// </summary>
-		FilledPartiallyThenCancelled = 109,
+		FilledPartiallyThenCancelled = 115,
 		/// <summary>
 		/// Filled while program was offline so did not catch fill
 		/// - this is caught when market conditions mean the order ought to have been filled
 		/// </summary>
-		FilledOfflineUncomfirmed = 111,
+		FilledOfflineUncomfirmed = 120,
 		/// <summary>
 		/// Previous FilledOfflineUnconfirmed that has now been confirmed using trade history
 		/// </summary>
-		FilledOfflineConfirmed = 113,
+		FilledOfflineConfirmed = 125,
 		/// <summary>
 		/// GDAX: does not exist
 		/// Binance: does not exist
@@ -428,52 +441,53 @@ namespace VSLee.Utils.ExchangeBase
 		/// - an order is placed manually in TWS while the exchange is closed.
 		/// - an order is blocked by TWS due to a precautionary setting and appears there in an untransmitted state
 		/// </summary>
-		Inactive = 120,
+		Inactive = 130,
 		/// <summary>
 		/// GDAX: does not exist
 		/// Binance: does not exist
 		/// IB (ApiPending): indicates order has not yet been sent to IB server, for instance 
 		/// if there is a delay in receiving the security definition. Uncommonly received.
 		/// </summary>
-		PendingInApi = 122,
+		PendingInApi = 135,
 		/// <summary>
 		/// GDAX: does not exist
 		/// Binance: does not exist
 		/// IB (ApiCancelled): after an order has been submitted and before it has been acknowledged, 
 		/// an API client can request its cancellation, producing this state.
 		/// </summary>
-		CancelledByApi = 124,
+		CancelledByApi = 140,
 	}
 
 	public enum DoneReason : Byte
 	{
 		Filled = 10,
 		Cancelled = 20,
-		CancelledManually = 25,
+		CancelledOrphan = 30,
+		CancelledManually = 40,
 		/// <summary> provided only by IB </summary>
-		CancelledByTrader = 30,
-		CancelledByBroker = 40,
-		CancelledByBrokerMarginInitial = 50,
-		CancelledByBrokerRegT = 60,
-		CancelledByBrokerLiquidation = 70,
+		CancelledByTrader = 50,
+		CancelledByBroker = 60,
+		CancelledByBrokerMarginInitial = 70,
+		CancelledByBrokerRegT = 80,
+		CancelledByBrokerLiquidation = 90,
 		/// <summary> ultimately considered Rejected, so that's what the OrderStatus is </summary>
-		CancelledByTraderThenRejected = 75,
+		CancelledByTraderThenRejected = 100,
 		/// <summary>
 		/// in Binance/IB (not in Coinbase)
 		/// Reason is stored in a separate enum: OrderRejectedReason
 		/// </summary>
-		Rejected = 80,
+		Rejected = 110,
 		/// <summary>
 		/// in Binance/IB (not in Coinbase)
 		/// </summary>
-		Expired = 90,
+		Expired = 120,
 		/// <summary>
 		/// this DoneReason is set before the cancellation is even sent to the broker/exchange
 		/// </summary>
-		NoLongerReadyCancelledByTraderDB = 100,
-		CombinedWithNewOrders = 110,
-		CombinedWithNewOrdersAndPriceOverridden = 120,
-		InternalMatched = 130,
+		NoLongerReadyCancelledByTraderDB = 130,
+		CombinedWithNewOrders = 140,
+		CombinedWithNewOrdersAndPriceOverridden = 150,
+		InternalMatched = 160,
 	}
 	public enum NEPLStatus : byte
 	{
@@ -726,22 +740,15 @@ namespace VSLee.Utils.ExchangeBase
 		}
 		public static Realm GetRealm(this Exchange_Enum exchange)
 		{
-			if (CryptoExchanges.Contains(exchange)) return Realm.Crypto;
+			if (CryptoDiscriminators.Contains(exchange)
+				|| ESLedgerExchanges.Contains(exchange)
+				|| CELedgerExchanges.Contains(exchange)) return Realm.Crypto;
 			if (EquityExchanges.Contains(exchange)) return Realm.Equity;
 			throw new NotImplementedException($"Unexpected exchange in GetRealm() + {exchange}");
 		}
 
-		public static Exchange_Enum[] CryptoExchanges => new Exchange_Enum[]
+		public static Exchange_Enum[] CryptoDiscriminators => new Exchange_Enum[]
 		{
-			Exchange_Enum.Binance, Exchange_Enum.BinanceDEX, Exchange_Enum.BinanceJersey, Exchange_Enum.BinanceUS,
-			Exchange_Enum.BitBlinx, Exchange_Enum.Bitfinex, Exchange_Enum.BitFlyer,
-			Exchange_Enum.BitMEX, Exchange_Enum.Bitstamp, Exchange_Enum.Bittrex,
-			Exchange_Enum.BL3P, Exchange_Enum.CEXIO, Exchange_Enum.Coinbase,
-			Exchange_Enum.CoinEx, Exchange_Enum.Digifinex, Exchange_Enum.Gemini,
-			Exchange_Enum.itBit, Exchange_Enum.Huobi, Exchange_Enum.Kraken,
-			Exchange_Enum.KuCoin, Exchange_Enum.NDAX, Exchange_Enum.OKCoin,
-			Exchange_Enum.OKEx, Exchange_Enum.Poloniex, Exchange_Enum.ThePit,
-			Exchange_Enum.ZBcom,
 			Exchange_Enum.Discriminator_GradientCrypto, Exchange_Enum.Discriminator_GradientCryptoBase, Exchange_Enum.Discriminator_StandardCrypto,
 		};
 		public static bool IsESLedgerExchange(this Exchange_Enum exchange)
@@ -750,15 +757,18 @@ namespace VSLee.Utils.ExchangeBase
 		}
 		public static Exchange_Enum[] ESLedgerExchanges => new Exchange_Enum[]
 		{
-			Exchange_Enum.Binance, Exchange_Enum.BinanceDEX, Exchange_Enum.BinanceJersey, Exchange_Enum.BinanceUS,
-			Exchange_Enum.BitBlinx, Exchange_Enum.Bitfinex, Exchange_Enum.BitFlyer,
+			Exchange_Enum.ApolloX, Exchange_Enum.Binance, Exchange_Enum.BinanceDEX,
+			Exchange_Enum.BinanceJersey, Exchange_Enum.BinanceUS, Exchange_Enum.BitBlinx,
+			Exchange_Enum.Bitfinex, Exchange_Enum.BitFlyer, Exchange_Enum.Bithumb,
 			Exchange_Enum.BitMEX, Exchange_Enum.Bitstamp, Exchange_Enum.Bittrex,
-			Exchange_Enum.BL3P, Exchange_Enum.CEXIO, Exchange_Enum.Coinbase,
-			Exchange_Enum.Digifinex, Exchange_Enum.Gemini, // not CoinEx
-			Exchange_Enum.itBit, Exchange_Enum.Huobi, Exchange_Enum.Kraken,
-			Exchange_Enum.KuCoin, Exchange_Enum.NDAX, Exchange_Enum.OKCoin,
-			Exchange_Enum.OKEx, Exchange_Enum.Poloniex, Exchange_Enum.ThePit,
-			Exchange_Enum.ZBcom,
+			Exchange_Enum.BL3P, Exchange_Enum.Bybit, Exchange_Enum.CEXIO,
+			Exchange_Enum.Coinbase, Exchange_Enum.CryptoCom, Exchange_Enum.Digifinex,
+			Exchange_Enum.Dydx, Exchange_Enum.FTX, Exchange_Enum.FTXUS,
+			Exchange_Enum.GateIO, Exchange_Enum.Gemini, Exchange_Enum.itBit,
+			Exchange_Enum.HitBTC, Exchange_Enum.Huobi, Exchange_Enum.Kraken,
+			Exchange_Enum.KuCoin, Exchange_Enum.LBank, Exchange_Enum.NDAX,
+			Exchange_Enum.OKCoin, Exchange_Enum.OKEx, Exchange_Enum.Poloniex,
+			Exchange_Enum.ThePit, Exchange_Enum.ZBcom,
 		};
 		public static bool IsCELedgerExchange(this Exchange_Enum exchange)
 		{
@@ -766,7 +776,7 @@ namespace VSLee.Utils.ExchangeBase
 		}
 		public static Exchange_Enum[] CELedgerExchanges => new Exchange_Enum[]
 		{
-			Exchange_Enum.Bittrex, Exchange_Enum.CoinEx,
+			Exchange_Enum.BitMax, Exchange_Enum.Bittrex, Exchange_Enum.BtcTurk, Exchange_Enum.Chiliz, Exchange_Enum.CoinEx, Exchange_Enum.Coinzo, Exchange_Enum.LiveCoin, Exchange_Enum.Paribu,
 		};
 		public static Exchange_Enum[] EquityExchanges => new Exchange_Enum[]
 		{
@@ -781,8 +791,8 @@ namespace VSLee.Utils.ExchangeBase
 		}
 		public static OrderStatus[] PreSubmitted => new OrderStatus[]
 		{
-			OrderStatus.TemporaryPriorToDBInsert, OrderStatus.CreatedReadyToSubmit,
-			OrderStatus.PreSubmitted,
+			OrderStatus.TemporaryPriorToDBInsert, OrderStatus.WaitingForEntryOrder,
+			OrderStatus.CreatedReadyToSubmit, OrderStatus.PreSubmitted,
 		};
 		public static bool IsSubmittedButNotDone(this OrderStatus orderStatus)
 			=> orderStatus.IsSubmittedButPreConfirmedByServer() || orderStatus.IsReceivedButNotDone();
