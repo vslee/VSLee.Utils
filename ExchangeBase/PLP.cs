@@ -16,6 +16,7 @@ namespace VSLee.Utils.ExchangeBase
 				{ Exchange_Enum.BinanceUS,      $"{standard},firstTradeId,lastTradeId" },
 				{ Exchange_Enum.Bitfinex,       standard },
 				{ Exchange_Enum.BitFlyer,       $"{standard},buyChildOrderAcceptanceId,sellChildOrderAcceptanceId" },
+				{ Exchange_Enum.Bithumb,           "side,size,price,time" }, // - tradeId
 				{ Exchange_Enum.BitMax,       $"{standard},seqNum" },
 				{ Exchange_Enum.BitMEX,         standard },
 				{ Exchange_Enum.Bitstamp,       $"{standard},buyOrderId,sellOrderId" },

@@ -483,8 +483,14 @@ namespace VSLee.Utils.ExchangeBase
 		Expired = 120,
 		/// <summary>
 		/// this DoneReason is set before the cancellation is even sent to the broker/exchange
+		/// Back to initial price, although this may be set to a less aggressive price upon submission
 		/// </summary>
-		NoLongerReadyCancelledByTraderDB = 130,
+		NoLongerReadyCancelledByTraderDB_BackToInitialPrice = 130,
+		/// <summary>
+		/// this DoneReason is set before the cancellation is even sent to the broker/exchange
+		/// New initial price, as order submitter will not set a more aggressive PriceSubmitted
+		/// </summary>
+		NoLongerReadyCancelledByTraderDB_NewAggressiveInitialPrice = 135,
 		CombinedWithNewOrders = 140,
 		CombinedWithNewOrdersAndPriceOverridden = 150,
 		InternalMatched = 160,
